@@ -2,14 +2,6 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
-            <li class="nav-item">
-                <a href="{{ route("admin.home") }}" class="nav-link">
-                    <i class="nav-icon fas fa-fw fa-tachometer-alt">
-
-                    </i>
-                    {{ trans('global.dashboard') }}
-                </a>
-            </li>
             @can('user_management_access')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
