@@ -23,6 +23,9 @@ class StoreTransactionRequest extends FormRequest
             'asset_id' => [
                 'required',
                 'integer'],
+            'user_id'  => [
+                'required',
+                'integer'],
             'stock'    => [
                 'required',
                 'integer',

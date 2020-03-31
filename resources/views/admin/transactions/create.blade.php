@@ -24,6 +24,20 @@
                 <span class="help-block">{{ trans('cruds.transaction.fields.asset_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="user_id">{{ trans('cruds.transaction.fields.user') }}</label>
+                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                    @foreach($users as $id => $user)
+                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('user'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('user') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.transaction.fields.user_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="stock">{{ trans('cruds.transaction.fields.stock') }}</label>
                 <input class="form-control {{ $errors->has('stock') ? 'is-invalid' : '' }}" type="number" name="stock" id="stock" value="{{ old('stock', '') }}" step="1" required>
                 @if($errors->has('stock'))

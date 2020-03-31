@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyTransactionRequest;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Transaction;
+use App\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,9 @@ class TransactionsController extends Controller
 
         $assets = Assett::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.transactions.create', compact('assets'));
+        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('admin.transactions.create', compact('assets', 'users'));
     }
 
     public function store(StoreTransactionRequest $request)
@@ -46,9 +49,11 @@ class TransactionsController extends Controller
 
         $assets = Assett::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $transaction->load('asset', 'team');
+        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.transactions.edit', compact('assets', 'transaction'));
+        $transaction->load('asset', 'team', 'user');
+
+        return view('admin.transactions.edit', compact('assets', 'users', 'transaction'));
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
@@ -63,7 +68,7 @@ class TransactionsController extends Controller
     {
         abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $transaction->load('asset', 'team');
+        $transaction->load('asset', 'team', 'user');
 
         return view('admin.transactions.show', compact('transaction'));
     }

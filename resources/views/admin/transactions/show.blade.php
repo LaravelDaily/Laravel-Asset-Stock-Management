@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.transaction.fields.user') }}
+                        </th>
+                        <td>
+                            {{ $transaction->user->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.transaction.fields.stock') }}
                         </th>
                         <td>
