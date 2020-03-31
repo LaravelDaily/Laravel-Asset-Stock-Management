@@ -2,33 +2,51 @@
 
 namespace App\Http\Requests;
 
-use App\Stock;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class StoreStockRequest
+ * @package App\Http\Requests
+ */
 class StoreStockRequest extends FormRequest
 {
-    public function authorize()
+    /**
+     * @return bool
+     */
+    public function authorize(): bool
     {
         abort_if(Gate::denies('stock_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
-
     }
 
-    public function rules()
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         return [
             'asset_id'      => [
                 'required',
-                'integer'],
+                'integer',
+                'unique:stocks,asset_id,NULL,team_id'
+            ],
             'current_stock' => [
                 'nullable',
                 'integer',
-                'min:-2147483648',
-                'max:2147483647'],
+            ],
         ];
+    }
 
+    /**
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'asset_id.unique' => 'The asset is in stock already.',
+        ];
     }
 }
