@@ -63,7 +63,7 @@ class StocksController extends Controller
     {
         abort_if(Gate::denies('stock_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $stock->load('asset', 'team');
+        $stock->load('asset.transactions.user.team');
 
         return view('admin.stocks.show', compact('stock'));
     }

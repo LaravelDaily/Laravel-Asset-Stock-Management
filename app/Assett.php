@@ -29,6 +29,10 @@ class Assett extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'asset_id');
     }
 }
