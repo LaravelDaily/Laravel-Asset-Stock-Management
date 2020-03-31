@@ -17,7 +17,7 @@ class MakeAssetAndTeamUniqueInStocksTable extends Migration
     public function up(): void
     {
         Schema::table('stocks', function (Blueprint $table) {
-            $table->unique(['asset_id', 'team_id']);
+            $table->unique(['asset_id', 'team_id', 'deleted_at']);
         });
     }
 

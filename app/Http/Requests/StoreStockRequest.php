@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -31,7 +32,10 @@ class StoreStockRequest extends FormRequest
             'asset_id'      => [
                 'required',
                 'integer',
-                'unique:stocks,asset_id,NULL,team_id'
+                Rule::unique('stocks')
+                    ->where('asset_id', request()->input('asset_id'))
+                    ->where('team_id', auth()->user()->team_id)
+                    ->whereNull('deleted_at'),
             ],
             'current_stock' => [
                 'nullable',
