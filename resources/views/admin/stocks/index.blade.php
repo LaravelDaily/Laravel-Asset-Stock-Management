@@ -35,9 +35,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.stock.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.stock.fields.asset') }}
                         </th>
                         <th>
@@ -59,9 +56,6 @@
                         <tr data-entry-id="{{ $stock->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $stock->id ?? '' }}
                             </td>
                             <td>
                                 {{ $stock->asset->name ?? '' }}
