@@ -39,9 +39,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('stocks', 'StocksController')->except(['edit', 'update', 'destroy']);
 
     // Transactions
-    Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
+//    Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
     Route::post('transactions/{stock}/storeStock', 'TransactionsController@storeStock')->name('transactions.storeStock');
-    Route::resource('transactions', 'TransactionsController');
+    Route::resource('transactions', 'TransactionsController')->only(['index']);
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
