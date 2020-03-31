@@ -7,6 +7,18 @@
                 {{ trans('global.add') }} {{ trans('cruds.stock.title_singular') }}
             </a>
         </div>
+        <div class="col-lg-12 mt-2">
+            @if(session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
     </div>
 @endcan
 <div class="card">
@@ -32,6 +44,12 @@
                             {{ trans('cruds.stock.fields.current_stock') }}
                         </th>
                         <th>
+                            Add Stock
+                        </th>
+                        <th>
+                            Remove Stock
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -50,6 +68,22 @@
                             </td>
                             <td>
                                 {{ $stock->current_stock ?? '' }}
+                            </td>
+                            <td>
+                                <form action="{{ route('admin.transactions.storeStock', $stock->id) }}" method="POST" style="display: inline-block;" class="form-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="action" value="add">
+                                    <input type="number" name="stock" class="form-control form-control-sm col-4" min="1">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="ADD">
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{ route('admin.transactions.storeStock', $stock->id) }}" method="POST" style="display: inline-block;" class="form-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="action" value="remove">
+                                    <input type="number" name="stock" class="form-control form-control-sm col-4" min="1">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="REMOVE">
+                                </form>
                             </td>
                             <td>
                                 @can('stock_show')
