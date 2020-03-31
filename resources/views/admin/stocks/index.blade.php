@@ -2,11 +2,6 @@
 @section('content')
 @can('stock_create')
     <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route("admin.stocks.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.stock.title_singular') }}
-            </a>
-        </div>
         <div class="col-lg-12 mt-2">
             @if(session('status'))
                 <div class="alert alert-success" role="alert">
