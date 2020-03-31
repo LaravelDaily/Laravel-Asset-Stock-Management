@@ -29,6 +29,9 @@
                             {{ trans('cruds.transaction.fields.asset') }}
                         </th>
                         <th>
+                            {{ trans('cruds.transaction.fields.user') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.transaction.fields.stock') }}
                         </th>
                         <th>
@@ -47,6 +50,9 @@
                             </td>
                             <td>
                                 {{ $transaction->asset->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $transaction->user->name ?? '' }}
                             </td>
                             <td>
                                 {{ $transaction->stock ?? '' }}

@@ -17,7 +17,7 @@ class TransactionsApiController extends Controller
     {
         abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransactionResource(Transaction::with(['asset', 'team'])->get());
+        return new TransactionResource(Transaction::with(['asset', 'team', 'user'])->get());
 
     }
 
@@ -35,7 +35,7 @@ class TransactionsApiController extends Controller
     {
         abort_if(Gate::denies('transaction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TransactionResource($transaction->load(['asset', 'team']));
+        return new TransactionResource($transaction->load(['asset', 'team', 'user']));
 
     }
 

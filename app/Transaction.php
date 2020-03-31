@@ -22,6 +22,7 @@ class Transaction extends Model
     protected $fillable = [
         'stock',
         'team_id',
+        'user_id',
         'asset_id',
         'created_at',
         'updated_at',
@@ -43,6 +44,12 @@ class Transaction extends Model
     public function team()
     {
         return $this->belongsTo(Team::class, 'team_id');
+
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
 
     }
 }
