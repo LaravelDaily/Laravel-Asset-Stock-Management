@@ -35,8 +35,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('teams', 'TeamController');
 
     // Stocks
-    Route::delete('stocks/destroy', 'StocksController@massDestroy')->name('stocks.massDestroy');
-    Route::resource('stocks', 'StocksController');
+    //Route::delete('stocks/destroy', 'StocksController@massDestroy')->name('stocks.massDestroy');
+    Route::resource('stocks', 'StocksController')->except(['edit', 'update', 'destroy']);
 
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
