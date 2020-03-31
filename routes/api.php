@@ -10,8 +10,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Users
     Route::apiResource('users', 'UsersApiController');
 
-    // Assetts
-    Route::apiResource('assetts', 'AssettsApiController');
+    // Assets
+    Route::apiResource('assets', 'AssetsApiController');
 
     // Teams
     Route::apiResource('teams', 'TeamApiController');

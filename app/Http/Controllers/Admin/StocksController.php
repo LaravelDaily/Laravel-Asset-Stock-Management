@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Assett;
+use App\Asset;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyStockRequest;
 use App\Http\Requests\StoreStockRequest;
@@ -27,7 +27,7 @@ class StocksController extends Controller
     {
         abort_if(Gate::denies('stock_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $assets = Assett::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.stocks.create', compact('assets'));
     }
@@ -44,7 +44,7 @@ class StocksController extends Controller
     {
         abort_if(Gate::denies('stock_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $assets = Assett::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $assets = Asset::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $stock->load('asset', 'team');
 

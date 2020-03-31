@@ -67,9 +67,9 @@ return [
             'team_helper'              => '',
         ],
     ],
-    'assett'         => [
-        'title'          => 'Assetts',
-        'title_singular' => 'Assett',
+    'asset'         => [
+        'title'          => 'Assets',
+        'title_singular' => 'Asset',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => '',

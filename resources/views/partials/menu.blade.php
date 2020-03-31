@@ -62,13 +62,13 @@
                     </ul>
                 </li>
             @endcan
-            @can('assett_access')
+            @can('asset_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.assetts.index") }}" class="nav-link {{ request()->is('admin/assetts') || request()->is('admin/assetts/*') ? 'active' : '' }}">
+                    <a href="{{ route("admin.assets.index") }}" class="nav-link {{ request()->is('admin/assets') || request()->is('admin/assets/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-cogs nav-icon">
 
                         </i>
-                        {{ trans('cruds.assett.title') }}
+                        {{ trans('cruds.asset.title') }}
                     </a>
                 </li>
             @endcan

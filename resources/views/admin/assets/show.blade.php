@@ -3,13 +3,13 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.assett.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.asset.title') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.assetts.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.assets.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,32 +17,32 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.assett.fields.id') }}
+                            {{ trans('cruds.asset.fields.id') }}
                         </th>
                         <td>
-                            {{ $assett->id }}
+                            {{ $asset->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.assett.fields.name') }}
+                            {{ trans('cruds.asset.fields.name') }}
                         </th>
                         <td>
-                            {{ $assett->name }}
+                            {{ $asset->name }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.assett.fields.description') }}
+                            {{ trans('cruds.asset.fields.description') }}
                         </th>
                         <td>
-                            {{ $assett->description }}
+                            {{ $asset->description }}
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.assetts.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.assets.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

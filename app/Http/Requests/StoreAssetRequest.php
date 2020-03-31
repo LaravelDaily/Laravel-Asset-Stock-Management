@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Assett;
+use App\Asset;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyAssettRequest extends FormRequest
+class StoreAssetRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('assett_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('asset_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
 
@@ -20,8 +20,8 @@ class MassDestroyAssettRequest extends FormRequest
     public function rules()
     {
         return [
-            'ids'   => 'required|array',
-            'ids.*' => 'exists:assetts,id',
+            'name' => [
+                'required'],
         ];
 
     }

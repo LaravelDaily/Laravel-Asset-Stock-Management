@@ -37,7 +37,7 @@ class Transaction extends Model
 
     public function asset()
     {
-        return $this->belongsTo(Assett::class, 'asset_id');
+        return $this->belongsTo(Asset::class, 'asset_id');
 
     }
 

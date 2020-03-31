@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class Assett extends Model
+class Asset extends Model
 {
     use SoftDeletes;
 
-    public $table = 'assetts';
+    public $table = 'assets';
 
     protected $dates = [
         'created_at',

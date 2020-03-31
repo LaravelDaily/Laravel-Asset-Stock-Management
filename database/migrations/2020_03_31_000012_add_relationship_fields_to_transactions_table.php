@@ -10,7 +10,7 @@ class AddRelationshipFieldsToTransactionsTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->unsignedInteger('asset_id');
-            $table->foreign('asset_id', 'asset_fk_1230972')->references('id')->on('assetts');
+            $table->foreign('asset_id', 'asset_fk_1230972')->references('id')->on('assets');
             $table->unsignedInteger('team_id')->nullable();
             $table->foreign('team_id', 'team_fk_1230977')->references('id')->on('teams');
             $table->unsignedInteger('user_id');
