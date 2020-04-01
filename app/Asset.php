@@ -24,6 +24,7 @@ class Asset extends Model
         'updated_at',
         'deleted_at',
         'description',
+        'danger_level',
     ];
 
     protected function serializeDate(DateTimeInterface $date)

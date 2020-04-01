@@ -32,6 +32,9 @@
                             {{ trans('cruds.asset.fields.description') }}
                         </th>
                         <th>
+                            Danger level
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -50,6 +53,9 @@
                             </td>
                             <td>
                                 {{ $asset->description ?? '' }}
+                            </td>
+                            <td>
+                                {{ $asset->danger_level }}
                             </td>
                             <td>
                                 @can('asset_show')
