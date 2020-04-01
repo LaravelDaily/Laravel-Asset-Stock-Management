@@ -58,8 +58,13 @@
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
   $.extend(true, $.fn.dataTable.defaults, {
-    order: [[ 1, 'desc' ]],
+    order: [[ 0, 'desc' ]],
     pageLength: 100,
+      columnDefs: [{
+          orderable: true,
+          className: '',
+          targets: 0
+      }]
   });
   $('.datatable-Transaction:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){

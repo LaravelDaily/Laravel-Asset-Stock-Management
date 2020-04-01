@@ -26,9 +26,6 @@
             <table class=" table table-bordered table-striped table-hover datatable datatable-Stock">
                 <thead>
                     <tr>
-                        <th width="10">
-
-                        </th>
                         <th>
                             {{ trans('cruds.stock.fields.asset') }}
                         </th>
@@ -55,10 +52,7 @@
                 </thead>
                 <tbody>
                     @foreach($stocks as $key => $stock)
-                        <tr data-entry-id="{{ $stock->id }}">
-                            <td>
-
-                            </td>
+                        <tr>
                             <td>
                                 {{ $stock->asset->name ?? '' }}
                             </td>
@@ -116,6 +110,11 @@
   $.extend(true, $.fn.dataTable.defaults, {
     order: [[ 1, 'desc' ]],
     pageLength: 100,
+      columnDefs: [{
+          orderable: true,
+          className: '',
+          targets: 0
+      }]
   });
   $('.datatable-Stock:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
