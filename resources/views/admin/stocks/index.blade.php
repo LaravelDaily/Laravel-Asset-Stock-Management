@@ -29,14 +29,14 @@
                         <th>
                             {{ trans('cruds.stock.fields.asset') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.stock.fields.current_stock') }}
-                        </th>
                         @admin
                             <th>
                                 Hospital
                             </th>
                         @endadmin
+                        <th>
+                            {{ trans('cruds.stock.fields.current_stock') }}
+                        </th>
                         @user
                             <th>
                                 Add Stock
@@ -56,14 +56,14 @@
                             <td>
                                 {{ $stock->asset->name ?? '' }}
                             </td>
-                            <td>
-                                {{ $stock->current_stock ?? '' }}
-                            </td>
                             @admin
                                 <td>
                                     {{ $stock->team->name }}
                                 </td>
                             @endadmin
+                            <td>
+                                {{ $stock->current_stock ?? '' }}
+                            </td>
                             @user
                                 <td>
                                     <form action="{{ route('admin.transactions.storeStock', $stock->id) }}" method="POST" style="display: inline-block;" class="form-inline">
