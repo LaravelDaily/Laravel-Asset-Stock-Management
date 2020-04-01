@@ -27,6 +27,9 @@
             </thead>
             <tbody>
                 @foreach($transactions as $transaction)
+                    @if($loop->index == 10)
+                        @break;
+                    @endif
                     <tr>
                         <td style="border: 1px solid #ddd;">{{ $transaction->team->name }}</td>
                         <td style="border: 1px solid #ddd;">{{ $transaction->asset->name }}</td>
@@ -36,6 +39,9 @@
                 @endforeach
             </tbody>
         </table>
+        @if(count($transactions) > 10)
+            <p><a href="{{ route('admin.transactions.index') }}">Log in to view more transactions</a></p>
+        @endif
     @else
         <h3>No transactions were made during last 24 hours.</h3>
     @endif
