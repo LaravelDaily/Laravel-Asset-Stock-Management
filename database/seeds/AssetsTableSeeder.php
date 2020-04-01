@@ -30,17 +30,5 @@ class AssetsTableSeeder extends Seeder
                 'description' => $asset
             ]);
         }
-
-        $teams  = Team::all();
-        $assets = Asset::all();
-
-        foreach ($teams as $team) {
-            foreach ($assets as $asset) {
-                factory(\App\Stock::class)->create([
-                    'asset_id' => $asset->id,
-                    'team_id'  => $team->id,
-                ]);
-            }
-        }
     }
 }
