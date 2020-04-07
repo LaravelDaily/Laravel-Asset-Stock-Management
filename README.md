@@ -6,22 +6,21 @@ Manage the assets and their stock in hospitals: view for one hospital, with supe
 
 ## Screenshots 
 
-![Laravel Job Listings Search](https://laraveldaily.com/wp-content/uploads/2019/10/Screen-Shot-2019-10-29-at-9.50.52-AM.png)
+![Laravel Stock Management 01](https://quickadminpanel.com/blog/wp-content/uploads/2020/04/Screen-Shot-2020-04-07-at-12.24.57-PM.png)
 
 - - - - -
 
-![Laravel Job Listings Results](https://laraveldaily.com/wp-content/uploads/2019/10/Screen-Shot-2019-10-29-at-9.49.05-AM.png)
+![Laravel Stock Management 02](https://quickadminpanel.com/blog/wp-content/uploads/2020/04/Screen-Shot-2020-04-07-at-12.24.04-PM.png)
 
 - - - - -
 
-## Adminpanel Screenshot
+![Laravel Stock Management 03](https://quickadminpanel.com/blog/wp-content/uploads/2020/04/Screen-Shot-2020-04-07-at-12.24.18-PM.png)
 
-![Laravel Job Listings list](https://laraveldaily.com/wp-content/uploads/2019/10/Screen-Shot-2019-10-29-at-9.49.25-AM.png)
+- - - - -
 
-- Front-end part is taken from [Bootstrap Joblisting Theme](https://colorlib.com/wp/template/joblisting/) and transformed into Laravel Blade and assets.
-- Admin part is fully generated with [QuickAdminPanel](https://2019.quickadminpanel.com).
+![Laravel Stock Management 04](https://quickadminpanel.com/blog/wp-content/uploads/2020/04/Screen-Shot-2020-04-07-at-12.25.12-PM.png)
 
----
+- - - - -
 
 ## How to use
 
@@ -32,6 +31,8 @@ Manage the assets and their stock in hospitals: view for one hospital, with supe
 - Run __php artisan migrate --seed__ (it has some seeded data for your testing)
 - That's it: launch the main URL. 
 - You can login to adminpanel by going go `/login` URL and login with credentials __admin@admin.com__ - __password__
+- For other users, doctors/directors, their email is in `users.email` field, and password is __password__
+
 
 ## License
 
@@ -42,7 +43,5 @@ Basically, feel free to use and re-use any way you want.
 ## More from our LaravelDaily Team
 
 - Check out our adminpanel generator [QuickAdminPanel](https://quickadminpanel.com)
-- Read our [Blog with Laravel Tutorials](https://laraveldaily.com)
-- FREE E-book: [50 Laravel Quick Tips (and counting)](https://laraveldaily.com/free-e-book-40-laravel-quick-tips-and-counting/)
 - Subscribe to our [YouTube channel Laravel Business](https://www.youtube.com/channel/UCTuplgOBi6tJIlesIboymGA)
 - Enroll in our [Laravel Online Courses](https://laraveldaily.teachable.com/)
