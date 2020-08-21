@@ -17,7 +17,7 @@
     </div>
 @endcan
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-info">
         {{ trans('cruds.stock.title_singular') }} {{ trans('global.list') }}
     </div>
 
@@ -31,7 +31,7 @@
                         </th>
                         @admin
                             <th>
-                                Hospital
+                                Furnisher
                             </th>
                         @endadmin
                         <th>

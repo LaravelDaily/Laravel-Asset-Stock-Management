@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-dark">
         {{ trans('global.change_password') }}
     </div>
 

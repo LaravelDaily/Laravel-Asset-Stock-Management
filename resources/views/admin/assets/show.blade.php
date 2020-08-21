@@ -41,7 +41,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Danger level
+                           Primary
                         </th>
                         <td>
                             {{ $asset->danger_level }}

@@ -30,7 +30,7 @@
                 <span class="help-block">{{ trans('cruds.asset.fields.description_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="danger_level">Danger level</label>
+                <label class="required" for="danger_level">Primary</label>
                 <input class="form-control {{ $errors->has('danger_level') ? 'is-invalid' : '' }}" type="number" name="danger_level" id="danger_level" value="{{ old('danger_level', 0) }}" required>
                 @if($errors->has('danger_level'))
                     <div class="invalid-feedback">
