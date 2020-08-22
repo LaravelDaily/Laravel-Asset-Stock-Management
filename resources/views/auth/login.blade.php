@@ -1,12 +1,13 @@
 @extends('layouts.app')
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+    <div class="col-md-12">
+        <div class="card mx-8">
+            <div class="card-body p-8">
+                <h1 style="text-align: center; padding: 24px 28px;color: green;font-family: fantasy; text-transform: uppercase; ">
+                    {{ trans('panel.site_title') }}
+                </h1>
 
-                <p class="text-muted">{{ trans('global.login') }}</p>
 
                 @if(session('message'))
                     <div class="alert alert-info" role="alert">
@@ -20,7 +21,7 @@
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
-                                <i class="fa fa-user"></i>
+                                <i style="color: green;" class="fas fa-user-shield"></i>
                             </span>
                         </div>
 
@@ -35,7 +36,7 @@
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                            <span style="color: green; width:43px;" class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
 
                         <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
@@ -57,19 +58,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-6">
-                            <button type="submit" class="btn btn-primary px-4">
+                        <div class="col-8">
+                            <button type="submit" class="btn btn-success" style="width: 200px; padding: 16px">
                                 {{ trans('global.login') }}
                             </button>
                         </div>
-                        <div class="col-6 text-right">
-                            @if(Route::has('password.request'))
-                                <a class="btn btn-link px-0" href="{{ route('password.request') }}">
-                                    {{ trans('global.forgot_password') }}
-                                </a><br>
-                            @endif
 
-                        </div>
                     </div>
                 </form>
             </div>

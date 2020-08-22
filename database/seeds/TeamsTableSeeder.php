@@ -17,7 +17,7 @@ class TeamsTableSeeder extends Seeder
             $randomNumber = rand(123, 789);
 
             $team = factory(Team::class)->create([
-                'name' => "Hospital $randomNumber",
+                'name' => "Furnizues $randomNumber",
             ]);
 
             $director = factory(User::class)->create([
@@ -30,8 +30,8 @@ class TeamsTableSeeder extends Seeder
             $director->roles()->sync(2);
 
             $doctor = factory(User::class)->create([
-                'name'           => "Doctor $randomNumber",
-                'email'          => "doctor$randomNumber@gmail.com",
+                'name'           => "Furnizues $randomNumber",
+                'email'          => "furnizues$randomNumber@gmail.com",
                 'password'       => bcrypt('password'),
                 'team_id'        => $team->id,
                 'remember_token' => null,

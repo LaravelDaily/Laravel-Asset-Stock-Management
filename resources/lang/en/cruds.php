@@ -2,12 +2,12 @@
 
 return [
     'userManagement' => [
-        'title'          => 'User management',
-        'title_singular' => 'User management',
+        'title'          => 'Users',
+        'title_singular' => 'Users',
     ],
     'permission'     => [
-        'title'          => 'Permissions',
-        'title_singular' => 'Permission',
+        'title'          => 'Authorization ',
+        'title_singular' => 'Authorization ',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
@@ -47,9 +47,9 @@ return [
             'id_helper'                => '',
             'name'                     => 'Name',
             'name_helper'              => '',
-            'email'                    => 'Email',
+            'email'                    => 'E-mail',
             'email_helper'             => '',
-            'email_verified_at'        => 'Email verified at',
+            'email_verified_at'        => 'Verified at',
             'email_verified_at_helper' => '',
             'password'                 => 'Password',
             'password_helper'          => '',
@@ -68,8 +68,8 @@ return [
         ],
     ],
     'asset'         => [
-        'title'          => 'Assets',
-        'title_singular' => 'Asset',
+        'title'          => 'Categories',
+        'title_singular' => 'Categories',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => '',
@@ -86,8 +86,8 @@ return [
         ],
     ],
     'team'           => [
-        'title'          => 'Hospitals',
-        'title_singular' => 'Hospital',
+        'title'          => 'Feeders',
+        'title_singular' => 'feeder',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
@@ -107,7 +107,7 @@ return [
         'fields'         => [
             'id'                   => 'ID',
             'id_helper'            => '',
-            'asset'                => 'Asset',
+            'asset'                => 'Categories',
             'asset_helper'         => '',
             'current_stock'        => 'Current Stock',
             'current_stock_helper' => '',
@@ -122,12 +122,12 @@ return [
         ],
     ],
     'transaction'    => [
-        'title'          => 'Transactions',
-        'title_singular' => 'Transaction',
+        'title'          => 'Reports',
+        'title_singular' => 'Report',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
-            'asset'             => 'Asset',
+            'asset'             => 'Categories',
             'asset_helper'      => '',
             'stock'             => 'Stock',
             'stock_helper'      => '',

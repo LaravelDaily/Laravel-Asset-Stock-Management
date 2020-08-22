@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-primary">
         {{ trans('cruds.transaction.title_singular') }} {{ trans('global.list') }}
     </div>
 

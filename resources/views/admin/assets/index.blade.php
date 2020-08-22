@@ -10,11 +10,11 @@
     </div>
 @endcan
 <div class="card">
-    <div class="card-header">
+    <div class="card-header badge-success">
         {{ trans('cruds.asset.title_singular') }} {{ trans('global.list') }}
     </div>
 
-    <div class="card-body">
+    <div class="card-body badge-pill">
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-Asset">
                 <thead>
@@ -32,7 +32,7 @@
                             {{ trans('cruds.asset.fields.description') }}
                         </th>
                         <th>
-                            Danger level
+                           Primary
                         </th>
                         <th>
                             &nbsp;
