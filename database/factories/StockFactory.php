@@ -1,17 +1,32 @@
 <?php
 
-/** @var Factory $factory */
+namespace Database\Factories;
 
 use App\Asset;
 use App\Stock;
 use App\Team;
-use Faker\Generator as Faker;
-use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Stock::class, function (Faker $faker) {
-    return [
-        'current_stock' => 0,
-        'asset_id'      => Asset::inRandomOrder()->first()->id,
-        'team_id'       => Team::inRandomOrder()->first()->id,
-    ];
-});
+class StockFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Stock::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'current_stock' => 0,
+            'asset_id' => Asset::inRandomOrder()->first()->id,
+            'team_id' => Team::inRandomOrder()->first()->id,
+        ];
+    }
+}
