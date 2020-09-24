@@ -3,13 +3,14 @@
 namespace App;
 
 use App\Traits\MultiTenantModelTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class Stock extends Model
 {
-    use SoftDeletes, MultiTenantModelTrait;
+    use SoftDeletes, MultiTenantModelTrait, HasFactory;
 
     public $table = 'stocks';
 

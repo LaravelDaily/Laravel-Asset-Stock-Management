@@ -23,7 +23,7 @@ class TeamObserver
         $assets = Asset::all();
 
         foreach ($assets as $asset) {
-            factory(Stock::class)->create([
+            Stock::factory()->create([
                 'asset_id' => $asset->id,
                 'team_id'  => $team->id,
             ]);
