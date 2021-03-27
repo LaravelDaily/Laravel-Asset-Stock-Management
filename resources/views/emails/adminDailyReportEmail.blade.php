@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h2>Hospitals with low amount of assets:</h2>
+    <h2>Branches with low amount of assets:</h2>
     @forelse($dangerStock as $hospital)
         @if(count($hospital->stocks) > 0)
             <h3>{{ $hospital->name }}</h3>
@@ -20,7 +20,7 @@
     @if(count($transactions) > 0)
         <table style="border: 1px solid #ddd;border-collapse: collapse;">
             <thead>
-                <th style="border: 1px solid #ddd;width: 200px">Hospital</th>
+                <th style="border: 1px solid #ddd;width: 200px">Branch</th>
                 <th style="border: 1px solid #ddd;width: 200px">Asset</th>
                 <th style="border: 1px solid #ddd;width: 200px">Items of transactions</th>
                 <th style="border: 1px solid #ddd;width: 100px">Items left</th>
