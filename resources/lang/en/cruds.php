@@ -86,8 +86,8 @@ return [
         ],
     ],
     'team'           => [
-        'title'          => 'Hospitals',
-        'title_singular' => 'Hospital',
+        'title'          => 'Branches',
+        'title_singular' => 'Branch',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',

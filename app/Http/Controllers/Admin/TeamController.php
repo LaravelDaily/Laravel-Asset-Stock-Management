@@ -63,6 +63,8 @@ class TeamController extends Controller
     {
         abort_if(Gate::denies('team_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        // added team stocks delete for many to many relationship
+        $team->stocks()->delete();
         $team->delete();
 
         return back();
