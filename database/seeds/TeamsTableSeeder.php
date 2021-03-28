@@ -17,7 +17,7 @@ class TeamsTableSeeder extends Seeder
             $randomNumber = rand(123, 789);
 
             $team = Team::factory()->create([
-                'name' => "Hospital $randomNumber",
+                'name' => "Branch $randomNumber",
             ]);
 
             $director = User::factory()->create([

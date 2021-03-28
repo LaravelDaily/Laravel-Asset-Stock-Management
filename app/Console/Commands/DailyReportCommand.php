@@ -30,7 +30,7 @@ class DailyReportCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Daily report of hospitals for admins';
+    protected $description = 'Daily report of Branches for admins';
 
     /**
      * Create a new command instance.

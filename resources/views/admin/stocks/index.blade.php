@@ -31,7 +31,7 @@
                         </th>
                         @admin
                             <th>
-                                Hospital
+                                Branch
                             </th>
                         @endadmin
                         <th>
