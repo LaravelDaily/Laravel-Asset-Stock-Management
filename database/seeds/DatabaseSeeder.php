@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             RoleUserTableSeeder::class,
             TeamsTableSeeder::class,
             AssetsTableSeeder::class,
+            BranchesSeeder::class,
         ]);
-
     }
 }
