@@ -12,9 +12,10 @@ class CreateAssetsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->longText('description')->nullable();
+            $table->double('price_buy', 8, 2)->default(0);
+            $table->double('price_sell', 8, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
-
     }
 }
