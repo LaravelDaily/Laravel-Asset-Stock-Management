@@ -13,30 +13,31 @@ class TeamsTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 5; $i++) {
+        // SET TO 1 LOOP ONLY
+        for ($i = 0; $i < 1; $i++) {
             $randomNumber = rand(123, 789);
 
             $team = Team::factory()->create([
-                'name' => "Branch $randomNumber",
+                'name' => "InventoryStore",
             ]);
 
-            $director = User::factory()->create([
-                'name'           => "Director $randomNumber",
-                'email'          => "director$randomNumber@gmail.com",
+            $manager = User::factory()->create([
+                'name'           => "Manager $randomNumber",
+                'email'          => "manager@admin.com",
                 'password'       => bcrypt('password'),
                 'team_id'        => $team->id,
                 'remember_token' => null,
             ]);
-            $director->roles()->sync(2);
+            $manager->roles()->sync(2);
 
-            $doctor = User::factory()->create([
-                'name'           => "Doctor $randomNumber",
-                'email'          => "doctor$randomNumber@gmail.com",
+            $staff = User::factory()->create([
+                'name'           => "Staff $randomNumber",
+                'email'          => "staff@admin.com",
                 'password'       => bcrypt('password'),
                 'team_id'        => $team->id,
                 'remember_token' => null,
             ]);
-            $doctor->roles()->sync(2);
+            $staff->roles()->sync(3);
         }
     }
 }

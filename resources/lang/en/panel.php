@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Asset Stock Management',
+    'site_title' => 'Inventory',
 ];
