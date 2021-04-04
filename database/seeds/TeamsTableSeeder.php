@@ -21,23 +21,23 @@ class TeamsTableSeeder extends Seeder
                 'name' => "InventoryStore",
             ]);
 
-            $director = User::factory()->create([
+            $manager = User::factory()->create([
                 'name'           => "Manager $randomNumber",
-                'email'          => "manager$randomNumber@gmail.com",
+                'email'          => "manager@admin.com",
                 'password'       => bcrypt('password'),
                 'team_id'        => $team->id,
                 'remember_token' => null,
             ]);
-            $director->roles()->sync(2);
+            $manager->roles()->sync(2);
 
-            $doctor = User::factory()->create([
+            $staff = User::factory()->create([
                 'name'           => "Staff $randomNumber",
-                'email'          => "staff$randomNumber@gmail.com",
+                'email'          => "staff@admin.com",
                 'password'       => bcrypt('password'),
                 'team_id'        => $team->id,
                 'remember_token' => null,
             ]);
-            $doctor->roles()->sync(3);
+            $staff->roles()->sync(3);
         }
     }
 }

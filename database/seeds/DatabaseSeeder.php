@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeders\BranchesTableSeeder;
 use Illuminate\Database\Seeder;
 
 /**
