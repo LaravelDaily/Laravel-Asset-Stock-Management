@@ -2,16 +2,16 @@
 
 namespace App;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use \DateTimeInterface;
 
-class Asset extends Model
+class OrderDetail extends Model
 {
     use SoftDeletes, HasFactory;
 
-    public $table = 'assets';
+    public $table = 'order_details';
 
     protected $dates = [
         'created_at',
@@ -20,14 +20,14 @@ class Asset extends Model
     ];
 
     protected $fillable = [
-        'name',
+        'order_id',
+        'asset_id',
+        'quantity',
+        'price_sell',
+        'price_total',
         'created_at',
         'updated_at',
         'deleted_at',
-        'description',
-        'danger_level',
-        'price_buy',
-        'price_sell',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -35,8 +35,15 @@ class Asset extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function transactions()
+    public function order()
     {
-        return $this->hasMany(Transaction::class, 'asset_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
+
+
 }
