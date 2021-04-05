@@ -51,6 +51,16 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('branch_access')
+                            <li class="nav-item">
+                                <a href="{{ route("admin.branches.index") }}" class="nav-link {{ request()->is('branch/teams') || request()->is('admin/branches/*') ? 'active' : '' }}">
+                                    <i class="fa-fw fas fa-code-branch nav-icon">
+
+                                    </i>
+                                    {{ trans('cruds.branch.title') }}
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan
