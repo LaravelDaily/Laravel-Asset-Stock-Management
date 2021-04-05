@@ -86,8 +86,8 @@ return [
         ],
     ],
     'team'           => [
-        'title'          => 'Branches',
-        'title_singular' => 'Branch',
+        'title'          => 'Teams',
+        'title_singular' => 'Team',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
@@ -141,6 +141,22 @@ return [
             'team_helper'       => '',
             'user'              => 'User',
             'user_helper'       => '',
+        ],
+    ],
+    'branch'         => [
+        'title'          => 'Branches',
+        'title_singular' => 'Branch',
+        'fields'         => [
+            'id'                 => 'ID',
+            'id_helper'          => '',
+            'name'               => 'Name',
+            'name_helper'        => '',
+            'created_at'         => 'Created at',
+            'created_at_helper'  => '',
+            'updated_at'         => 'Updated at',
+            'updated_at_helper'  => '',
+            'deleted_at'         => 'Deleted at',
+            'deleted_at_helper'  => '',
         ],
     ],
 ];
