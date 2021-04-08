@@ -27,6 +27,5 @@ class PermissionRoleTableSeeder extends Seeder
                 && substr($permission->title, 0, 7) != 'branch_';
         });
         Role::findOrFail(3)->permissions()->sync($user_permissions);
-
     }
 }

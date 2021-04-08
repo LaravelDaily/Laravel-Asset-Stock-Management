@@ -32,6 +32,12 @@
                             {{ trans('cruds.asset.fields.description') }}
                         </th>
                         <th>
+                            Bought Price
+                        </th>
+                        <th>
+                            Sell Price
+                        </th>
+                        <th>
                             Danger level
                         </th>
                         <th>
@@ -53,6 +59,12 @@
                             </td>
                             <td>
                                 {{ $asset->description ?? '' }}
+                            </td>
+                            <td>
+                                {{ number_format($asset->price_buy, 2) ?? '0.00' }}
+                            </td>
+                            <td>
+                                {{ number_format($asset->price_sell, 2) ?? '0.00' }}
                             </td>
                             <td>
                                 {{ $asset->danger_level }}
