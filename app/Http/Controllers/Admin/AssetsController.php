@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AssetsController extends Controller
 {
+   
     public function index()
     {
         abort_if(Gate::denies('asset_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -75,5 +76,10 @@ class AssetsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
 
+    }
+    public function loadInformation($id){
+       // echo json_decode($this->assets);
+        //echo Asset::find($id);
+        return view('admin.assets.dynamic_edit',['asset'=> Asset::find($id)]);
     }
 }

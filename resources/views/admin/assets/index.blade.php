@@ -9,6 +9,48 @@
         </div>
     </div>
 @endcan
+
+<div id="view-modal" class="modal fade"  
+    tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" 
+    aria-hidden="true" style="display: none;">
+     <div class="modal-dialog"> 
+          <div class="modal-content"> 
+
+               <div class="modal-header"> 
+                    <h4 class="modal-title">
+                     Stock Information
+                    </h4> 
+                    <button type="button" class="close" 
+                        data-dismiss="modal" 
+                        aria-hidden="true">
+                        ×
+                     </button> 
+               </div> 
+               <div class="modal-body"> 
+
+                   <div id="modal-loader" 
+                        style="display: none; text-align: center;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/images/ajax-loader.gif">
+                   </div>
+
+                   <!-- content will be load here -->                          
+                   <div id="dynamic-content"></div>
+
+                </div> 
+                <div class="modal-footer"> 
+                      <button type="button" 
+                          class="btn btn-default" 
+                          data-dismiss="modal">
+                          Close
+                      </button>  
+                </div> 
+
+         </div> 
+      </div>
+</div><!-- /.modal -->   
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.asset.title_singular') }} {{ trans('global.list') }}
@@ -47,7 +89,7 @@
                 </thead>
                 <tbody>
                     @foreach($assets as $key => $asset)
-                        <tr data-entry-id="{{ $asset->id }}">
+                        <tr class="asset-item" data-entry-id="{{ $asset->id }}">
                             <td>
 
                             </td>
@@ -71,7 +113,7 @@
                             </td>
                             <td>
                                 @can('asset_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.assets.show', $asset->id) }}">
+                                    <a class="btn btn-xs btn-primary view-asset" data-url="{{ route('admin.dynamicAsset', $asset->id) }}" data-toggle="modal" data-target="#view-modal">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
@@ -148,6 +190,34 @@
             .columns.adjust();
     });
 })
+
+$(".view-asset").click(function(){
+  console.log($(this).closest(".asset-item").data("entryId"));
+  $("#view-modal").fadeIn();
+  $('#dynamic-content').html(''); // leave it blank before ajax call
+  $('#modal-loader').show();      // load ajax loader
+  var url = $(this).data('url');
+  $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html'
+        })
+    .done(function(data){
+            console.log(data);  
+            $('#dynamic-content').html('');    
+            $('#dynamic-content').html(data); // load response 
+            $('#modal-loader').hide();        // hide ajax loader   
+        })
+    .fail(function(){
+            $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
+            $('#modal-loader').hide();
+    });
+
+
+
+});
+
+
 
 </script>
 @endsection
