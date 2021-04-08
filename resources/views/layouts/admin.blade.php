@@ -217,6 +217,14 @@
 });
 
     </script>
+    <script>
+        $("#price_buy").blur(function() {
+            $('#price_buy').val(parseFloat(this.value).toFixed(2));
+        });
+        $("#price_sell").blur(function() {
+            $('#price_sell').val(parseFloat(this.value).toFixed(2));
+        });
+    </script>
     @yield('scripts')
 </body>
 
