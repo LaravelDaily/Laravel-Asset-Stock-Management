@@ -199,7 +199,7 @@
         className: 'btn-default',
         text: printButtonTrans,
         exportOptions: {
-          columns: ':visible'
+          columns: ':visible,:not(.no-print)'
         }
       },
       {

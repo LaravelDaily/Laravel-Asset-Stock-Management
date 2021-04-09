@@ -1,9 +1,6 @@
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.asset.title_singular') }}
-    </div>
 
-    <div class="card-body">
+
+    <div class="card-body" id="asset-edit-modal">
         <form method="POST" action="{{ route("admin.assets.update", [$asset->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
@@ -16,16 +13,6 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.asset.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="description">{{ trans('cruds.asset.fields.description') }}</label>
-                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{{ old('description', $asset->description) }}</textarea>
-                @if($errors->has('description'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.asset.fields.description_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="price_buy">Bought Price</label>
@@ -48,6 +35,20 @@
                 <span class="help-block"></span>
             </div>
             <div class="form-group">
+                <label class="required" for="current_stock">Qty</label>
+                <span style="display: block;text-align: center;">
+                <span class="btn btn-success stock-add">+</span>
+                <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', $asset->getStock()) }}" required>
+                <span class="btn btn-danger stock-min">-</span>
+                </span>
+                @if($errors->has('current_stock'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('current_stock') }}
+                    </div>
+                @endif
+                <span class="help-block"></span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="danger_level">Danger level</label>
                 <input class="form-control {{ $errors->has('danger_level') ? 'is-invalid' : '' }}" type="number" name="danger_level" id="danger_level" value="{{ old('danger_level', $asset->danger_level) }}" required>
                 @if($errors->has('danger_level'))
@@ -57,12 +58,24 @@
                 @endif
                 <span class="help-block"></span>
             </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+            <div class="form-group" style="display:none" >
+                <button class="btn btn-danger" type="submit" id="save-data">
                     {{ trans('global.save') }}
                 </button>
             </div>
         </form>
-    </div>
-</div>
+        <script>
+            $(".stock-add").click(function(){
+                var _val=($("#current_stock").val());
+                $("#asset-edit-modal #current_stock").val(parseInt(_val)+1);
+            });
+            $(".stock-min").click(function(){
+                var _val=($("#current_stock").val());
+                $("#asset-edit-modal #current_stock").val(parseInt(_val)- 1);
+            });
+            $("#asset-edit-modal input[type='number']").click(function(){
+                $(this).select();
+            });
 
+        </script>
+ 

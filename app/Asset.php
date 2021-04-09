@@ -49,5 +49,13 @@ class Asset extends Model
         return $stock;
 
     }
+    public function updateStock($stock){
+        $stock   = DB::table('stocks')->where("team_id",1)
+                   ->where("asset_id",$this->id)
+                   ->update(["current_stock"=>$stock]);
+                
+        return $stock;
+
+    }
 
 }

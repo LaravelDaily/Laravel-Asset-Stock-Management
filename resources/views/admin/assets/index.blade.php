@@ -40,9 +40,8 @@
                 </div> 
                 <div class="modal-footer"> 
                       <button type="button" 
-                          class="btn btn-default" 
-                          data-dismiss="modal">
-                          Close
+                          class="btn btn-default">
+                          {{ trans('global.save') }}
                       </button>  
                 </div> 
 
@@ -71,9 +70,6 @@
                             {{ trans('cruds.asset.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.asset.fields.description') }}
-                        </th>
-                        <th>
                             Bought Price
                         </th>
                         <th>
@@ -82,7 +78,7 @@
                         <th>
                            Current Stock
                         </th>
-                        <th>
+                        <th class="no-print">
                             &nbsp;
                         </th>
                     </tr>
@@ -100,15 +96,16 @@
                                 {{ $asset->name ?? '' }}
                             </td>
                             <td>
-                                {{ $asset->description ?? '' }}
-                            </td>
-                            <td>
                                 {{ number_format($asset->price_buy, 2) ?? '0.00' }}
                             </td>
                             <td>
                                 {{ number_format($asset->price_sell, 2) ?? '0.00' }}
                             </td>
-                            <td>
+                            <td <?php 
+                                if($asset->getStock()<=$asset->danger_level){
+                                    echo "class='low-onstock'";
+                                } 
+                            ?> >
                                 {{ $asset->getStock() }}
                             </td>
                             <td>
@@ -185,7 +182,6 @@
 })
 
 $(".view-asset").click(function(){
-  console.log($(this).closest(".asset-item").data("entryId"));
   $("#view-modal").fadeIn();
   $('#dynamic-content').html(''); // leave it blank before ajax call
   $('#modal-loader').show();      // load ajax loader
@@ -196,10 +192,12 @@ $(".view-asset").click(function(){
             dataType: 'html'
         })
     .done(function(data){
-            console.log(data);  
             $('#dynamic-content').html('');    
             $('#dynamic-content').html(data); // load response 
-            $('#modal-loader').hide();        // hide ajax loader   
+            $('#modal-loader').hide();        // hide ajax loader  
+            $("#view-modal .modal-footer button").click(function(){
+                $("#view-modal #save-data").click();
+            }); 
         })
     .fail(function(){
             $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');

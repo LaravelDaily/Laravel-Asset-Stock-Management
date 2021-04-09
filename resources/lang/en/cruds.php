@@ -68,12 +68,12 @@ return [
         ],
     ],
     'asset'         => [
-        'title'          => 'Assets',
+        'title'          => 'Stock Management',
         'title_singular' => 'Asset',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => '',
-            'name'               => 'Name',
+            'name'               => 'Item Name',
             'name_helper'        => '',
             'description'        => 'Description',
             'description_helper' => '',

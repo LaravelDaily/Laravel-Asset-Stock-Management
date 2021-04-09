@@ -74,16 +74,6 @@
                     </a>
                 </li>
             @endcan
-            @can('stock_access')
-                <li class="nav-item">
-                    <a href="{{ route("admin.stocks.index") }}" class="nav-link {{ request()->is('admin/stocks') || request()->is('admin/stocks/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-cogs nav-icon">
-
-                        </i>
-                        {{ trans('cruds.stock.title') }}
-                    </a>
-                </li>
-            @endcan
             @can('transaction_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.transactions.index") }}" class="nav-link {{ request()->is('admin/transactions') || request()->is('admin/transactions/*') ? 'active' : '' }}">

@@ -115,3 +115,34 @@ table.dataTable thead .sorting_desc {
 .form-check.is-invalid ~ .invalid-feedback {
     display: block;
 }
+.stock-add{
+    float:left;
+}
+.stock-min{
+    float:right;
+}
+#asset-edit-modal #current_stock{
+    display: inline;
+    width: 80%;
+    text-align: center;
+}
+#asset-edit-modal label[for='current_stock'],#asset-edit-modal label[for='danger_level']{
+    display: block;
+    text-align: center;
+}
+#asset-edit-modal #danger_level{
+    text-align: center;
+}
+#view-modal .modal-footer button{
+    width: 100%;
+    background-color: #20A6D5;
+    color:white;
+}
+#asset-edit-modal #current_stock::-webkit-outer-spin-button,
+#asset-edit-modal #current_stock::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.low-onstock{
+    color:rgb(224, 75, 75);
+}
