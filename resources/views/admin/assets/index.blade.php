@@ -80,7 +80,7 @@
                             Sell Price
                         </th>
                         <th>
-                            Danger level
+                           Current Stock
                         </th>
                         <th>
                             &nbsp;
@@ -109,21 +109,14 @@
                                 {{ number_format($asset->price_sell, 2) ?? '0.00' }}
                             </td>
                             <td>
-                                {{ $asset->danger_level }}
+                                {{ $asset->getStock() }}
                             </td>
                             <td>
                                 @can('asset_show')
                                     <a class="btn btn-xs btn-primary view-asset" data-url="{{ route('admin.dynamicAsset', $asset->id) }}" data-toggle="modal" data-target="#view-modal">
-                                        {{ trans('global.view') }}
+                                        {{ trans('global.update') }}
                                     </a>
                                 @endcan
-
-                                @can('asset_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.assets.edit', $asset->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
                                 @can('asset_delete')
                                     <form action="{{ route('admin.assets.destroy', $asset->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
