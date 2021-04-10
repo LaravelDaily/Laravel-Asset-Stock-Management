@@ -53,6 +53,18 @@
 
 
         </ul>
+
+        <div class="mr-2">
+            <a class="btn btn-link" href="{{ route('admin.notifications.index') }}">
+                <i class="fas fa-bell" style="font-size:medium">
+                @if ($count_notification > 0)
+                <span class="badge badge-pill badge-danger">{{ $count_notification }}</span>
+                @endif
+                </i>
+            </a>
+
+        </div>
+
     </header>
 
     <div class="app-body">
