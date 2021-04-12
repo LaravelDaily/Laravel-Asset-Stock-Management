@@ -64,6 +64,7 @@
                 </button>
             </div>
         </form>
+        </div>
         <script>
             $(".stock-add").click(function(){
                 var _val=($("#current_stock").val());

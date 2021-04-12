@@ -2,6 +2,16 @@
     <nav class="sidebar-nav">
 
         <ul class="nav">
+             @can('transaction_access')
+                <li class="nav-item">
+                    <a href="{{ route("admin.orders.index") }}" class="nav-link {{ request()->is('admin/orders') || request()->is('admin/orders/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-cogs nav-icon">
+
+                        </i>
+                        {{ trans('global.ordernow') }}
+                    </a>
+                </li>
+            @endcan
             @can('user_management_access')
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
