@@ -17,7 +17,7 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->unsignedInteger('user_id');
             $table->string('title')->default('');
-            $table->string('message')->default('');
+            $table->text('message')->default('');
             $table->boolean('read')->default(0);
             $table->timestamps();
 
