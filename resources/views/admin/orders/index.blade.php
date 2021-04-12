@@ -1,25 +1,29 @@
 @extends('layouts.admin')
 @section('content')
+<?php
+use App\Branch;
+?>
 @can('asset_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route("admin.assets.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.asset.title_singular') }}
+            <a class="btn btn-success add-order"  data-url="{{ route('admin.dynamicOrder', 0) }}">
+                {{ trans('global.add_order') }} 
             </a>
         </div>
     </div>
 @endcan
 
-<div id="view-modal" class="modal fade"  
+
+<div id="view-modal" class="modal fade"   data-modal-index="1"
     tabindex="-1" role="dialog" 
     aria-labelledby="myModalLabel" 
     aria-hidden="true" style="display: none;">
-     <div class="modal-dialog"> 
+     <div class="modal-dialog modal-dialog-centered"> 
           <div class="modal-content"> 
 
                <div class="modal-header"> 
                     <h4 class="modal-title">
-                     Stock Information
+                     Add Order
                     </h4> 
                     <button type="button" class="close" 
                         data-dismiss="modal" 
@@ -41,42 +45,62 @@
                 <div class="modal-footer"> 
                       <button type="button" 
                           class="btn btn-default">
-                          {{ trans('global.save') }}
+                          {{ trans('global.process_order') }}
                       </button>  
                 </div> 
 
          </div> 
       </div>
 </div><!-- /.modal -->   
+<div class="modal fade" id="asset-qty" data-modal-index="2">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title">Please enter quantity</h4>
+         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       
+      </div>
+      <div class="modal-body">
+      <div class="form-group">
+            <input class="form-control" type="number" max="9999" value="1" >
+      </div>
+      <div class="form-group">
+            <span id="confirm-qty" class="btn btn-success w-100">CONFIRM (Press Enter)</span>
+      </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.asset.title_singular') }} {{ trans('global.list') }}
+        {{ trans('global.order') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Asset">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Order">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.asset.fields.id') }}
+                            {{ trans('cruds.order.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.asset.fields.name') }}
+                            {{ trans('cruds.branch.title_singular') }}
                         </th>
                         <th>
-                            Bought Price
+                            {{ trans('cruds.order.fields.created_at') }}  
                         </th>
                         <th>
-                            Sell Price
+                            {{ trans('cruds.order.fields.total_price') }}  
                         </th>
                         <th>
-                           Current Stock
+                            {{ trans('cruds.order.fields.status') }}  
                         </th>
                         <th class="no-print">
                             &nbsp;
@@ -84,43 +108,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($assets as $key => $asset)
-                        <tr class="asset-item" data-entry-id="{{ $asset->id }}">
+                    @foreach($orders as $key => $order)
+                        <tr class="order-item" data-entry-id="{{ $order->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $asset->id ?? '' }}
+                                {{ $order->id ?? '' }}
                             </td>
                             <td>
-                                {{ $asset->name ?? '' }}
+                                {{ Branch::find($order->branch_id)->name?? '' }}
                             </td>
                             <td>
-                                {{ number_format($asset->price_buy, 2) ?? '0.00' }}
+                                {{ $order->created_at ?? '' }}
                             </td>
                             <td>
-                                {{ number_format($asset->price_sell, 2) ?? '0.00' }}
-                            </td>
-                            <td <?php 
-                                if($asset->getStock()<=$asset->danger_level){
-                                    echo "class='low-onstock'";
-                                } 
-                            ?> >
-                                {{ $asset->getStock() }}
+                                 {{ $order->getTotalPrice() ?? '' }}
                             </td>
                             <td>
-                                @can('asset_show')
-                                <a class="btn btn-xs btn-primary view-asset" data-url="{{ route('admin.dynamicAsset', $asset->id) }}" data-toggle="modal" data-target="#view-modal">
-                                        {{ trans('global.update') }}
-                                    </a>
-                                @endcan
-                                @can('asset_delete')
-                                    <form action="{{ route('admin.assets.destroy', $asset->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                              {{ $order->created_at ?? '' }}
+                            </td>
+                            <td>
+                             
+                            <a class="btn btn-xs btn-primary view-order"  data-url="{{ route('admin.dynamicOrder', $order->id ) }}">
+                                 View Transaction
+                             </a>
 
                             </td>
 
@@ -144,7 +156,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.assets.massDestroy') }}",
+    url: "{{ route('admin.orders.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -174,38 +186,48 @@
     order: [[ 1, 'desc' ]],
     pageLength: 100,
   });
-  $('.datatable-Asset:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  $('.datatable-Order:not(.ajaxTable)').DataTable({ buttons: dtButtons })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
         $($.fn.dataTable.tables(true)).DataTable()
             .columns.adjust();
     });
 })
 
-$(".view-asset").click(function(){
+$(".add-order,.view-order").click(function(){
+ var url = $(this).data('url');
+ var hide=false;
+ if(!$(this).closest(".order-item").length){
+ 
+ if (!confirm('{{ trans('global.confirm_create_order') }}')) {
+    hide=true;
+    $("#view-modal").modal("hide");
+    return;
+ }else{
+    $("#view-modal").modal("show");
+ } 
+ }else{
+    $("#view-modal").modal("show");
+ } 
   $("#view-modal").fadeIn();
   $('#dynamic-content').html(''); // leave it blank before ajax call
   $('#modal-loader').show();      // load ajax loader
-  var url = $(this).data('url');
   $.ajax({
             url: url,
             type: 'GET',
             dataType: 'html'
-        })
+       })
     .done(function(data){
             $('#dynamic-content').html('');    
             $('#dynamic-content').html(data); // load response 
             $('#modal-loader').hide();        // hide ajax loader  
             $("#view-modal .modal-footer button").click(function(){
-                $("#view-modal #save-data").click();
+            $("#view-modal #save-data").click();
             }); 
         })
     .fail(function(){
             $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
             $('#modal-loader').hide();
     });
-
-
-
 });
 
 

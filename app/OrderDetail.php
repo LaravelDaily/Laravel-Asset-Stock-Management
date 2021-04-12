@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderDetail extends Model
 {
-    use SoftDeletes, HasFactory;
+    use  HasFactory;
 
     public $table = 'order_details';
 

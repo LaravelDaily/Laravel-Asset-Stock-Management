@@ -146,3 +146,113 @@ table.dataTable thead .sorting_desc {
 .low-onstock{
     color:rgb(224, 75, 75);
 }
+/* distance between stacked modals*/
+/* The first modal translateZ value*/
+
+  .modal.show {
+    -webkit-perspective: 2000px;
+    -moz-perspective: 2000px;
+    -ms-perspective: 2000px;
+    -o-perspective: 2000px;
+    perspective: 2000px;
+  }
+  .modal.show .modal-dialog.aside {
+    -webkit-transform: -340px;
+    -moz-transform: -340px;
+    -ms-transform: -340px;
+    -o-transform: -340px;
+    transform: -340px;
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(-340px);
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(-340px);
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(-340px);
+    transform: scale(0.8) rotateY(45deg) translateZ(-340px);
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+  .modal.show .modal-dialog.aside.aside-1 {
+    -webkit-transform: calc(-340px + 40px);
+    -moz-transform: calc(-340px + 40px);
+    -ms-transform: calc(-340px + 40px);
+    -o-transform: calc(-340px + 40px);
+    transform: calc(-340px + 40px);
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + 40px));
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + 40px));
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + 40px));
+    transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + 40px));
+  }
+  .modal.show .modal-dialog.aside.aside-2 {
+    -webkit-transform: calc(-340px + (40px * 2));
+    -moz-transform: calc(-340px + (40px * 2));
+    -ms-transform: calc(-340px + (40px * 2));
+    -o-transform: calc(-340px + (40px * 2));
+    transform: calc(-340px + (40px * 2));
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 2)));
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 2)));
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 2)));
+    transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 2)));
+  }
+  .modal.show .modal-dialog.aside.aside-3 {
+    -webkit-transform: calc(-340px + (40px * 3));
+    -moz-transform: calc(-340px + (40px * 3));
+    -ms-transform: calc(-340px + (40px * 3));
+    -o-transform: calc(-340px + (40px * 3));
+    transform: calc(-340px + (40px * 3));
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 3)));
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 3)));
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 3)));
+    transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 3)));
+  }
+  .modal.show .modal-dialog.aside.aside-4 {
+    -webkit-transform: calc(-340px + (40px * 4));
+    -moz-transform: calc(-340px + (40px * 4));
+    -ms-transform: calc(-340px + (40px * 4));
+    -o-transform: calc(-340px + (40px * 4));
+    transform: calc(-340px + (40px * 4));
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 4)));
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 4)));
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 4)));
+    transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 4)));
+  }
+  .modal.show .modal-dialog.aside.aside-5 {
+    -webkit-transform: calc(-340px + (40px * 5));
+    -moz-transform: calc(-340px + (40px * 5));
+    -ms-transform: calc(-340px + (40px * 5));
+    -o-transform: calc(-340px + (40px * 5));
+    transform: calc(-340px + (40px * 5));
+    -webkit-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 5)));
+    -ms-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 5)));
+    -o-transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 5)));
+    transform: scale(0.8) rotateY(45deg) translateZ(calc(-340px + (40px * 5)));
+  }
+  #asset-qty .modal-dialog{
+    position: relative;
+    bottom: 120px;
+  }
+  .modal-backdrop {
+    display: none;
+  }
+  .modal {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .add-asset{
+    position: relative;
+    float: right;
+    bottom: 35px;
+  }
+  #asset-qty input{
+      text-align: center;
+      font-size: large;
+  }
+ #custom-search-input{
+    border-top: 2px dashed #0303;
+ }
+ .asset-item .qty{
+    float: right;
+    font-weight: bold;
+    border: 1px solid #0303;
+    cursor: pointer;
+    padding: 0 8px;
+    border-radius: 5px;
+ }
