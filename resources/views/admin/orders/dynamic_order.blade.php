@@ -43,7 +43,7 @@ foreach ($assets as $asset) {
                                  margin-top: 8px;"></i>
 						</div>
 						<ul class="card list-group" style="padding:8px;min-height:240px;max-height:240px;margin-bottom:0;overflow-y:auto">
-							<li class="list-group-item asset-item" style="display:none"><span class="assetname">Cras justo odio</span><span class="qty" >0</span></li>
+							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span><span class="qty" >0</span></li>
 						</ul>
 			</div>
         </form>
@@ -138,6 +138,7 @@ $('.add-asset').on('click', function(){
   if (!currentDialog.length){
     return;
   }
+  getRemainingQty();
   targetDialog.data('previous-dialog', currentDialog);
   currentDialog.addClass('aside');
   var stackedDialogCount = $('.modal.in .modal-dialog.aside').length;
@@ -163,10 +164,14 @@ $('#view-modal').on('shown.bs.modal', function(){
     $(this).find("#order-branch").focus();
     $(this).find("#order-branch").select();
 });
+$('#view-modal').on('hide.bs.modal', function(){
+    location.reload();
+});
 $('#asset-qty').on('shown.bs.modal', function(){
     $(this).find("input").focus();
     $(this).find("input").select();    
     $("#asset-qty #confirm-qty").one("click",confirmQty);
+
 });
 $.ajaxSetup({
 headers: {
@@ -199,7 +204,31 @@ updateItemList();
 var IS_EDITING=false;
 
 var failMessage=false;
+function getRemainingQty(){
+  $("#asset-qty .info").html("Checking stock information...");
+  var assetToAdd=$("#asset_name").attr("data-selected-id");
+  $.ajax({
+    type:'POST',
+    url:'ajaxRequest',
+    data:{action:"getAssetInfo",assetId:assetToAdd},
+    success:function(data){
+    
+      if(data.success!=null){
+        $("#asset-qty .info").html(data.asset.name+"  (remaining stock: "+data.asset.currentStock+" )");
+      }else{
+        $("#asset-qty .info").html("Item not found!");      
+      }
+      }
+
+  
+  });
+}
+var savingOrder=null;
 function confirmQty(){
+    if(savingOrder!=null){
+      return;
+    }
+
     if(order==null){
         order={};
     }
@@ -236,12 +265,11 @@ function confirmQty(){
         return;
     }
    
-    $.ajax({
+    savingOrder=$.ajax({
     type:'POST',
     url:'ajaxRequest',
     data:{action:"saveOrder",order:JSON.stringify(order)},
     success:function(data){
-    
       if(data.success!=null){
      //  alert(data.success);
        fillOrder(data.order);
@@ -257,12 +285,13 @@ function confirmQty(){
           failMessage=false;
         }
       }
-
+      savingOrder=null;
     }
   });
 } 
 function  fillOrder(_order){
   order.id=_order.id;
+  $("#view-modal .modal-title").html("Order #"+order.id+"");
   order.branch_id=_order.branch_id;
   order.itemList=_order.itemList;
   order.total_price=_order.total_price;
@@ -287,18 +316,21 @@ function updateItemList(){
       //found,update,prepend
       if(_itemList[index].quantity!=parseInt($(element).find(".qty").html())){
       var updateElement=$(element).clone();
+      $(newElement).removeClass("ignore-clone");
       $(updateElement).find(".qty").html(_itemList[index].quantity);
       $(element).remove();
       $(container).prepend(updateElement);
       }
     }else{
-      var newElement=$(".asset-item:first-child").clone();
+      var newElement=$(".asset-item.ignore-clone").clone();
+      $(newElement).removeClass("ignore-clone");
       $(newElement).find(".assetname").html(_itemList[index]._asset.name);
       $(newElement).find(".qty").html(_itemList[index].quantity);
       $(newElement).attr("data-asset-id",_itemList[index]._asset.id);
       $(container).prepend(newElement);
       $(newElement).fadeIn("slow");
     }
+    $(".asset-item:not(.ignore-clone)").css("opacity",1); 
   }
 
   $(".asset-item .qty").click(function(){
@@ -348,5 +380,19 @@ $("#view-modal").ready(function() {
     }
     ?>);
 });
+$('#order-modal #search').keyup(function(){	
+		var current_query = $('#search').val().toLowerCase();
+		if (current_query !== "") {
+			$(".list-group .asset-item:not(.ignore-clone)").hide();
+			$(".list-group .asset-item:not(.ignore-clone)").each(function(){
+				var current_keyword = $(this).text().toLowerCase();
+				if (current_keyword.indexOf(current_query) >=0) {
+					$(this).show();    	 	
+				};
+			});    	
+		} else {
+			$(".list-group .asset-item:not(.ignore-clone)").show();
+		};
+	});
 
 </script>

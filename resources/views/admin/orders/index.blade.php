@@ -61,6 +61,7 @@ use App\Branch;
        
       </div>
       <div class="modal-body">
+      <p class="info">Remaining:</p>
       <div class="form-group">
             <input class="form-control" type="number" max="9999" value="1" >
       </div>
@@ -103,7 +104,7 @@ use App\Branch;
                             {{ trans('cruds.order.fields.status') }}  
                         </th>
                         <th class="no-print">
-                            &nbsp;
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -126,9 +127,9 @@ use App\Branch;
                                  {{ $order->getTotalPrice() ?? '' }}
                             </td>
                             <td>
-                              {{ $order->created_at ?? '' }}
+                              {{ $order->status ?? '' }}
                             </td>
-                            <td>
+                            <td class="no-print">
                              
                             <a class="btn btn-xs btn-primary view-order"  data-url="{{ route('admin.dynamicOrder', $order->id ) }}">
                                  View Transaction
