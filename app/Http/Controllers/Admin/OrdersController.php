@@ -107,7 +107,18 @@ class OrdersController extends Controller
         if ($input['action']=="saveOrder") {
             return $this->saveOrder(json_decode($input['order']));
         }
+        if ($input['action']=="getAssetInfo") {
+            return $this->checkAssetInfo(($input['assetId']));
+        }
+        
         return response()->json(['success'=>'Got Simple Ajax Request.']);
+    }
+    public function checkAssetInfo($assetId){
+        $asset=Asset::find($assetId);
+        if(isset($asset)){
+            $asset->currentStock=$asset->getStock();
+          return response()->json(['success'=>true,'asset'=>$asset]);
+        }
     }
     public function saveOrder($order)
     {
@@ -124,7 +135,7 @@ class OrdersController extends Controller
             $_order->save();
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
             $_order->itemList=$_order->getOrderDetails();
-            return response()->json(['success'=>'Added item!','order'=>$_order]);
+            return response()->json(['success'=>'Added item!','order'=>$_order,'addedOrder'=>true]);
         }else{
             $_order=Order::find($order->id);
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
