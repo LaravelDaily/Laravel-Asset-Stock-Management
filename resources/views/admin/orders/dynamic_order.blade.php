@@ -14,12 +14,10 @@ foreach ($assets as $asset) {
 }
 ?>
 <div class="card-body" style="padding-bottom:0" id="order-modal">
-        <form method="POST" enctype="multipart/form-data">
-            @method('PUT')
-            @csrf
+
             <div class="form-group">
                 <label style="display:block"  for="branch">Branch</label>
-                <select id="order-branch" class="form-select">
+                <select id="order-branch" name="branch_id" class="form-control">
 
                     <option <?php if (!isset($order)) {
     echo 'selected';
@@ -39,7 +37,7 @@ foreach ($assets as $asset) {
                 <input class="form-control" data-selected-id=0 type="text" id="asset_name" value="" >
                 <span class="btn btn-success add-asset"  tabindex="0">ADD</span>
             </div>
-           
+
             <div id="custom-search-input">
 						<div class="input-group"  style="margin-bottom:8px">
 							<input id="search" type="text" class="form-control input-lg" placeholder="Search" />
@@ -52,16 +50,19 @@ foreach ($assets as $asset) {
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
               <span class="qty" >0</span>
               <span class="price"><span class="amount">00.00</span></span>
-              
+
               </li>
 						</ul>
-            <div id="totalPrice">
-              <div class="amount">00.00</div>
-              <div class="label">Total Price</div>
-            </div>
-            
+
+                <div id="totalPrice" class="input-group mb-3">
+                    <input type="text" class="amount form-control" id="txtTotalPrice" name="total_price" placeholder="Total Price" aria-label="Total Price" aria-describedby="basic-addon2" readonly>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">Total PHP</span>
+                    </div>
+                </div>
+
 			</div>
-        </form>
+
 </div>
 <script>
 var formatter = new Intl.NumberFormat('en-PH', {
@@ -72,9 +73,13 @@ var assetNames=<?php echo json_encode($assetNames);?>;
 
 @if(isset($order))
 $("#view-modal .modal-title").html("Order #"+<?php echo $order->id;?>);
+$("#hidOrderID").val(<?php echo $order->id;?>); // ADD ORDER ID TO HIDDEN INPUT
+$("#hidStatus").val('<?php echo $order->status;?>'); // ADD STATUS TO HIDDEN INPUT
 @endif
 @if(!isset($order))
 $("#view-modal .modal-title").html("Add Order");
+$("#hidOrderID").val(null); // ADD ORDER ID TO HIDDEN INPUT
+$("#hidStatus").val(''); // ADD STATUS TO HIDDEN INPUT
 @endif
 var autocompleteAsset=$( "#asset_name" ).autocomplete({
       source: assetNames,
@@ -89,7 +94,7 @@ var autocompleteAsset=$( "#asset_name" ).autocomplete({
       classes: {
         "ui-autocomplete": "asset-name-autocomplete",
       }
-      
+
 });
 $(".ui-autocomplete").css("z-index",9999);
 $("#order-modal").keypress(
@@ -166,7 +171,7 @@ $('.add-asset').on('click', function(){
   }
 });
 $('.modal').on('hide.bs.modal', function(){
-  var $dialog = $(this);  
+  var $dialog = $(this);
   var previousDialog = $dialog.data('previous-dialog');
   if (previousDialog){
     previousDialog.removeClass('aside');
@@ -188,7 +193,7 @@ $('#view-modal').on('hide.bs.modal', function(){
 });
 $('#asset-qty').on('shown.bs.modal', function(){
     $(this).find("input").focus();
-    $(this).find("input").select();    
+    $(this).find("input").select();
     $("#asset-qty #confirm-qty").one("click",confirmQty);
 
 });
@@ -208,14 +213,14 @@ var order=(<?php
           ?>);
 if(order!=null){
 order.itemList=(<?php
-   
+
    if (isset($order)) {
        echo($order->getOrderDetails());
    } else {
        echo "[]";
    }
-   
-   
+
+
    ?>);
 }
 updateItemList();
@@ -230,22 +235,23 @@ function getRemainingQty(){
     url:'ajaxRequest',
     data:{action:"getAssetInfo",assetId:assetToAdd},
     success:function(data){
-    
+
       if(data.success!=null){
         $("#asset-qty .info .amount").html(data.asset.currentStock);
         updateStockDisplay(data.asset.currentStock);
         $("#asset-qty .info .name").html(data.asset.name);
       }else{
-        $("#asset-qty .info .amount").html("Item not found!");      
+        $("#asset-qty .info .amount").html("Item not found!");
       }
       }
 
-  
-  
+
+
   });
 }
 var savingOrder=null;
 function confirmQty(){
+
     if(savingOrder!=null){
       return;
     }
@@ -256,6 +262,7 @@ function confirmQty(){
     order.branch_id=$("#order-branch").val();
     order.assetToAdd=$("#asset_name").attr("data-selected-id");
     order.assetQty=parseInt($("#asset-qty input").val());
+    order.total_price=$('#txtTotalPrice').val();
     if(order.assetQty.toString().indexOf("e") >= 0){
         alert("Input is invalid");
         return;
@@ -285,7 +292,9 @@ function confirmQty(){
         alert("Please input quantity less than 9999");
         return;
     }
-   
+
+    console.log(JSON.stringify(order));
+
     savingOrder=$.ajax({
     type:'POST',
     url:'ajaxRequest',
@@ -293,6 +302,7 @@ function confirmQty(){
     success:function(data){
       if(data.success!=null){
      //  alert(data.success);
+        //console.log("data:"+data.order);
        fillOrder(data.order);
        $("#asset-qty").modal('hide');
        resetAssetName();
@@ -307,9 +317,10 @@ function confirmQty(){
         }
       }
       savingOrder=null;
+      //order.status = 'Open';
     }
   });
-} 
+}
 function  fillOrder(_order){
   order.id=_order.id;
   $("#view-modal .modal-title").html("Order #"+order.id+"");
@@ -356,9 +367,10 @@ function updateItemList(){
     }
     $(container).scrollTop(0);
 
-    $(".asset-item:not(.ignore-clone)").css("opacity",1); 
-   
-    $("#totalPrice .amount").html(formatter.format(totalPrice));
+    $(".asset-item:not(.ignore-clone)").css("opacity",1);
+
+    //$("#totalPrice .amount").html(formatter.format(totalPrice));
+    $("#totalPrice .amount").val(totalPrice);     //value instead of html
   }
 
   $(".asset-item .qty").click(function(){
@@ -407,16 +419,16 @@ $("#view-modal").ready(function() {
     }
     ?>);
 });
-$('#order-modal #search').keyup(function(){	
+$('#order-modal #search').keyup(function(){
 		var current_query = $('#search').val().toLowerCase();
 		if (current_query !== "") {
 			$(".list-group .asset-item:not(.ignore-clone)").hide();
 			$(".list-group .asset-item:not(.ignore-clone)").each(function(){
 				var current_keyword = $(this).find(".assetname").text().toLowerCase();
 				if (current_keyword.indexOf(current_query) >=0) {
-					$(this).show();    	 	
+					$(this).show();
 				};
-			});    	
+			});
 		} else {
 			$(".list-group .asset-item:not(.ignore-clone)").show();
 		};
@@ -431,5 +443,22 @@ function updateStockDisplay(currentStockRemaining){
       }
     }
 }
+
+$('#bProcessOrder').click(function() {
+    //e.preventDefault();
+    var txtTotalPrice = $('#txtTotalPrice').val();
+    console.log("Total Price = " + txtTotalPrice);
+
+    if(txtTotalPrice=="")
+    {   alert("Unable to Process Order. Total Price is 0.00.");
+        return;
+    }
+
+    $("#hidStatus").val('Processed');
+    alert($("#hidStatus").val());
+
+    //confirmQty();
+    $('#frmOrder').submit();
+});
 
 </script>

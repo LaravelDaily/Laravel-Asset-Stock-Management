@@ -46,7 +46,17 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->order_status);
+        $orders = Order::findOrFail($request->order_id);
+        //dd($orders->status);
+        $orders->update([
+            'branch_id' => $request->branch_id,
+            'total_price' => $request->total_price,
+            'status' => (string) $request->order_status,
+        ]);
+
+        $orders = Order::all();
+        return view('admin.orders.index', compact('orders'));
     }
 
     /**
@@ -80,7 +90,7 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -95,7 +105,7 @@ class OrdersController extends Controller
     }
     public function loadInformation($id)
     {
-        return view('admin.orders.dynamic_order', ['order'=> Order::find($id)]);
+        return view('admin.orders.dynamic_order', ['order' => Order::find($id)]);
     }
     public function getBranches()
     {
@@ -104,20 +114,21 @@ class OrdersController extends Controller
     public function ajaxRequestPost(Request $request)
     {
         $input = $request->all();
-        if ($input['action']=="saveOrder") {
+        if ($input['action'] == "saveOrder") {
             return $this->saveOrder(json_decode($input['order']));
         }
-        if ($input['action']=="getAssetInfo") {
+        if ($input['action'] == "getAssetInfo") {
             return $this->checkAssetInfo(($input['assetId']));
         }
-        
-        return response()->json(['success'=>'Got Simple Ajax Request.']);
+
+        return response()->json(['success' => 'Got Simple Ajax Request.']);
     }
-    public function checkAssetInfo($assetId){
-        $asset=Asset::find($assetId);
-        if(isset($asset)){
-            $asset->currentStock=$asset->getStock();
-          return response()->json(['success'=>true,'asset'=>$asset]);
+    public function checkAssetInfo($assetId)
+    {
+        $asset = Asset::find($assetId);
+        if (isset($asset)) {
+            $asset->currentStock = $asset->getStock();
+            return response()->json(['success' => true, 'asset' => $asset]);
         }
     }
     public function saveOrder($order)
@@ -126,23 +137,30 @@ class OrdersController extends Controller
         if($asset->getStock()<$order->assetQty){
             return response()->json(['fail'=>'Not Enough Stock']);
         }
-      
+
         if (!isset($order->id)) {
-            $_order=new Order;
-            $_order->branch_id=$order->branch_id;
-            $_order->total_price=0;
-            $_order->order_date=date("Y-m-d h:i:s");
+            $_order = new Order;
+            $_order->branch_id = $order->branch_id;
+            $_order->total_price = 0;
+            $_order->order_date = date("Y-m-d h:i:s");
             $_order->save();
+
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
-            $_order->itemList=$_order->getOrderDetails();
-            return response()->json(['success'=>'Added item!','order'=>$_order,'addedOrder'=>true]);
-        }else{
-            $_order=Order::find($order->id);
+            $_order->itemList = $_order->getOrderDetails();
+            return response()->json(['success' => 'Added item!', 'order' => $_order, 'addedOrder' => true]);
+        } else {
+            $order_qry = Order::where('id', $order->id)
+                ->update([
+                    'branch_id' => $order->branch_id,
+                    'total_price' => $order->total_price,
+                    'status' => $order->status
+                ]);
+
+            $_order = Order::find($order->id);
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
-            $_order->itemList=$_order->getOrderDetails();
-            return response()->json(['success'=>'Added item!','order'=>$_order]);
+            $_order->itemList = $_order->getOrderDetails();
+            return response()->json(['success' => 'Added item!', 'order' => $_order]);
         }
-       
-        
     }
+
 }

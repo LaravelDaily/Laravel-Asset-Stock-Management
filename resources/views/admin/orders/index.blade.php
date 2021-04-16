@@ -6,60 +6,54 @@ use App\Branch;
 @can('asset_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success add-order"  data-url="{{ route('admin.dynamicOrder', 0) }}">
-                {{ trans('global.add_order') }} 
+            <a class="btn btn-success add-order text-white"  data-url="{{ route('admin.dynamicOrder', 0) }}">
+                {{ trans('global.add_order') }}
             </a>
         </div>
     </div>
 @endcan
 
 
-<div id="view-modal" class="modal fade"   data-modal-index="1"
-    tabindex="-1" role="dialog" 
-    aria-labelledby="myModalLabel" 
-    aria-hidden="true" style="display: none;">
-     <div class="modal-dialog modal-dialog-centered"> 
-          <div class="modal-content"> 
+<div id="view-modal" class="modal fade" data-modal-index="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<form id="frmOrder" method="POST" action="{{ route("admin.orders.store") }}" enctype="multipart/form-data">
+@csrf
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Order</h4>
+                <input type="hidden" id="hidOrderID" name="order_id">
+                <input type="hidden" id="hidStatus" name="order_status">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+            </div>
+            <div class="modal-body" style="padding-bottom:0">
 
-               <div class="modal-header"> 
-                    <h4 class="modal-title">
-                     Add Order
-                    </h4> 
-                    <button type="button" class="close" 
-                        data-dismiss="modal" 
-                        aria-hidden="true">
-                        ×
-                     </button> 
-               </div> 
-               <div class="modal-body" style="padding-bottom:0"> 
-
-                   <div id="modal-loader" 
+                   <div id="modal-loader"
                         style="display: none; text-align: center;">
                     <img src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/images/ajax-loader.gif">
                    </div>
 
-                   <!-- content will be load here -->                          
+                   <!-- content will be load here -->
                    <div id="dynamic-content"></div>
-                   
 
-                </div> 
-                <div class="modal-footer"> 
-                      <button type="button" 
-                          class="btn btn-default">
-                          {{ trans('global.process_order') }}
-                      </button>  
-                </div> 
 
-         </div> 
-      </div>
-</div><!-- /.modal -->   
+            </div>
+            <div class="modal-footer">
+                <button id="bProcessOrder" type="submit" class="btn btn-default">{{ trans('global.process_order') }}</button>
+            </div>
+
+         </div>
+    </div>
+</form>
+</div><!-- /.modal -->
+
 <div class="modal fade" id="asset-qty" data-modal-index="2">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
          <h4 class="modal-title">Please enter quantity</h4>
          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-       
+
       </div>
       <div class="modal-body">
       <p class="info"><span class="name"></span></span>&nbsp; (Remaining stock:<span class="amount">Checking....</span>)</p>
@@ -96,13 +90,13 @@ use App\Branch;
                             {{ trans('cruds.branch.title_singular') }}
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.created_at') }}  
+                            {{ trans('cruds.order.fields.created_at') }}
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.total_price') }}  
+                            {{ trans('cruds.order.fields.total_price') }}
                         </th>
                         <th>
-                            {{ trans('cruds.order.fields.status') }}  
+                            {{ trans('cruds.order.fields.status') }}
                         </th>
                         <th class="no-print">
                             Actions
@@ -125,14 +119,14 @@ use App\Branch;
                                 {{ $order->created_at ?? '' }}
                             </td>
                             <td>
-                                 {{ $order->getTotalPrice() ?? '' }}
+                                 {{ $order->total_price ?? ''}}
                             </td>
                             <td>
                               {{ $order->status ?? '' }}
                             </td>
                             <td class="no-print">
-                             
-                            <a class="btn btn-xs btn-primary view-order"  data-url="{{ route('admin.dynamicOrder', $order->id ) }}">
+
+                            <a class="btn btn-xs btn-primary text-white view-order"  data-url="{{ route('admin.dynamicOrder', $order->id ) }}">
                                  View Transaction
                              </a>
 
@@ -154,7 +148,7 @@ use App\Branch;
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('asset_delete')
+@can('order_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
@@ -199,17 +193,17 @@ $(".add-order,.view-order").click(function(){
  var url = $(this).data('url');
  var hide=false;
  if(!$(this).closest(".order-item").length){
- 
+
  if (!confirm('{{ trans('global.confirm_create_order') }}')) {
     hide=true;
     $("#view-modal").modal("hide");
     return;
  }else{
     $("#view-modal").modal("show");
- } 
+ }
  }else{
     $("#view-modal").modal("show");
- } 
+ }
   $("#view-modal").fadeIn();
   $('#dynamic-content').html(''); // leave it blank before ajax call
   $('#modal-loader').show();      // load ajax loader
@@ -219,12 +213,12 @@ $(".add-order,.view-order").click(function(){
             dataType: 'html'
        })
     .done(function(data){
-            $('#dynamic-content').html('');    
-            $('#dynamic-content').html(data); // load response 
-            $('#modal-loader').hide();        // hide ajax loader  
+            $('#dynamic-content').html('');
+            $('#dynamic-content').html(data); // load response
+            $('#modal-loader').hide();        // hide ajax loader
             $("#view-modal .modal-footer button").click(function(){
             $("#view-modal #save-data").click();
-            }); 
+            });
         })
     .fail(function(){
             $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');

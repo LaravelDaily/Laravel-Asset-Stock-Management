@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->string('total_price');
             $table->dateTime('order_date');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches');

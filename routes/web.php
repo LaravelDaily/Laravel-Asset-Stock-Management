@@ -20,7 +20,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
-    
+
     //Orders
     Route::delete('orders/destroy', 'OrdersController@massDestroy')->name('orders.massDestroy');
     Route::resource('orders', 'OrdersController');
@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
         'uses'=> 'OrdersController@loadInformation'
     ]);
     Route::post('ajaxRequest', 'OrdersController@ajaxRequestPost');
+    Route::post('processOrder', 'OrdersController@processOrder');
 
 
     // Roles
