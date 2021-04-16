@@ -31,7 +31,7 @@ use App\Branch;
                         ×
                      </button> 
                </div> 
-               <div class="modal-body"> 
+               <div class="modal-body" style="padding-bottom:0"> 
 
                    <div id="modal-loader" 
                         style="display: none; text-align: center;">
@@ -40,6 +40,7 @@ use App\Branch;
 
                    <!-- content will be load here -->                          
                    <div id="dynamic-content"></div>
+                   
 
                 </div> 
                 <div class="modal-footer"> 
@@ -61,7 +62,7 @@ use App\Branch;
        
       </div>
       <div class="modal-body">
-      <p class="info">Remaining:</p>
+      <p class="info"><span class="name"></span></span>&nbsp; (Remaining stock:<span class="amount">Checking....</span>)</p>
       <div class="form-group">
             <input class="form-control" type="number" max="9999" value="1" >
       </div>

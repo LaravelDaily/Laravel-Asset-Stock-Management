@@ -256,5 +256,6 @@ return [
     'order'                                => "Order",
     'process_order'                        => "Process Order",
     'confirm_create_order'                 => "Are you sure creating a new Order?",
-    'select_branch'                        => 'Please Select a Branch'
+    'select_branch'                        => 'Please Select a Branch',
+    'currency'                              => "Php."
 ];

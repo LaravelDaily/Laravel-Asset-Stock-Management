@@ -13,7 +13,7 @@ foreach ($assets as $asset) {
     array_push($assetNames, $_asset);
 }
 ?>
-<div class="card-body" id="order-modal">
+<div class="card-body" style="padding-bottom:0" id="order-modal">
         <form method="POST" enctype="multipart/form-data">
             @method('PUT')
             @csrf
@@ -21,9 +21,15 @@ foreach ($assets as $asset) {
                 <label style="display:block"  for="branch">Branch</label>
                 <select id="order-branch" class="form-select">
 
-                    <option <?php if(!isset($order)){echo 'selected';}?> value="0">{{ trans('global.select_branch') }}</option>
+                    <option <?php if (!isset($order)) {
+    echo 'selected';
+}?> value="0">{{ trans('global.select_branch') }}</option>
                     @foreach($branches as $key => $branch)
-                    <option value="{{ $branch->id }}" <?php if(isset($order)){if($branch->id==$order->branch_id){echo 'selected';}}?>>{{ $branch->name }}</option>
+                    <option value="{{ $branch->id }}" <?php if (isset($order)) {
+    if ($branch->id==$order->branch_id) {
+        echo 'selected';
+    }
+}?>>{{ $branch->name }}</option>
                     @endforeach
                 </select>
                 <span class="help-block"></span>
@@ -43,12 +49,25 @@ foreach ($assets as $asset) {
                                  margin-top: 8px;"></i>
 						</div>
 						<ul class="card list-group" style="padding:8px;min-height:240px;max-height:240px;margin-bottom:0;overflow-y:auto">
-							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span><span class="qty" >0</span></li>
+							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
+              <span class="qty" >0</span>
+              <span class="price"><span class="amount">00.00</span></span>
+              
+              </li>
 						</ul>
+            <div id="totalPrice">
+              <div class="amount">00.00</div>
+              <div class="label">Total Price</div>
+            </div>
+            
 			</div>
         </form>
 </div>
 <script>
+var formatter = new Intl.NumberFormat('en-PH', {
+  style: 'currency',
+  currency: 'PHP',
+});
 var assetNames=<?php echo json_encode($assetNames);?>;
 
 @if(isset($order))
@@ -180,20 +199,20 @@ headers: {
 });
 
 //ORDER OBJ
-var order=(<?php 
-            if(isset($order)){
-              echo ($order);
-            }else{
-              echo json_encode(new stdClass());
+var order=(<?php
+            if (isset($order)) {
+                echo($order);
+            } else {
+                echo json_encode(new stdClass());
             }
           ?>);
 if(order!=null){
 order.itemList=(<?php
    
-   if(isset($order)){
+   if (isset($order)) {
        echo($order->getOrderDetails());
-   }else{
-     echo "[]";
+   } else {
+       echo "[]";
    }
    
    
@@ -205,7 +224,6 @@ var IS_EDITING=false;
 
 var failMessage=false;
 function getRemainingQty(){
-  $("#asset-qty .info").html("Checking stock information...");
   var assetToAdd=$("#asset_name").attr("data-selected-id");
   $.ajax({
     type:'POST',
@@ -214,12 +232,15 @@ function getRemainingQty(){
     success:function(data){
     
       if(data.success!=null){
-        $("#asset-qty .info").html(data.asset.name+"  (remaining stock: "+data.asset.currentStock+" )");
+        $("#asset-qty .info .amount").html(data.asset.currentStock);
+        updateStockDisplay(data.asset.currentStock);
+        $("#asset-qty .info .name").html(data.asset.name);
       }else{
-        $("#asset-qty .info").html("Item not found!");      
+        $("#asset-qty .info .amount").html("Item not found!");      
       }
       }
 
+  
   
   });
 }
@@ -305,6 +326,7 @@ function resetAssetName(){
 
 function updateItemList(){
   var container=$("#custom-search-input .list-group");
+  var totalPrice=0;
   var _itemList=order.itemList;
   if(_itemList==null){
       return;
@@ -312,12 +334,13 @@ function updateItemList(){
   for (index = 0; index < _itemList.length; ++index) {
     var assetId=_itemList[index]._asset.id;
     var element=$(container).find(".asset-item[data-asset-id='"+assetId+"']");
+    totalPrice+=_itemList[index]._asset.price_sell*_itemList[index].quantity;
     if(element.length){
-      //found,update,prepend
       if(_itemList[index].quantity!=parseInt($(element).find(".qty").html())){
       var updateElement=$(element).clone();
       $(newElement).removeClass("ignore-clone");
-      $(updateElement).find(".qty").html(_itemList[index].quantity);
+      $(updateElement).find(".qty").html(_itemList[index].quantity)
+      $(updateElement).find(".price .amount").html(formatter.format(_itemList[index]._asset.price_sell));
       $(element).remove();
       $(container).prepend(updateElement);
       }
@@ -327,10 +350,15 @@ function updateItemList(){
       $(newElement).find(".assetname").html(_itemList[index]._asset.name);
       $(newElement).find(".qty").html(_itemList[index].quantity);
       $(newElement).attr("data-asset-id",_itemList[index]._asset.id);
+      $(newElement).find(".price .amount").html(formatter.format(_itemList[index]._asset.price_sell));
       $(container).prepend(newElement);
       $(newElement).fadeIn("slow");
     }
+    $(container).scrollTop(0);
+
     $(".asset-item:not(.ignore-clone)").css("opacity",1); 
+   
+    $("#totalPrice .amount").html(formatter.format(totalPrice));
   }
 
   $(".asset-item .qty").click(function(){
@@ -359,7 +387,6 @@ function checkIfAssetExisting(assetId){
 }
 function getAssetExisting(assetId){
   if(order.itemList==null){
-    alert("NO ");
     return false;
   }
   var container=$("#custom-search-input .list-group");
@@ -372,11 +399,11 @@ function getAssetExisting(assetId){
 }
 
 $("#view-modal").ready(function() {
-  $("#order-branch").val(<?php 
+  $("#order-branch").val(<?php
     if (isset($order)) {
         echo $order->branch_id;
-    }else{
-      echo 0;
+    } else {
+        echo 0;
     }
     ?>);
 });
@@ -385,7 +412,7 @@ $('#order-modal #search').keyup(function(){
 		if (current_query !== "") {
 			$(".list-group .asset-item:not(.ignore-clone)").hide();
 			$(".list-group .asset-item:not(.ignore-clone)").each(function(){
-				var current_keyword = $(this).text().toLowerCase();
+				var current_keyword = $(this).find(".assetname").text().toLowerCase();
 				if (current_keyword.indexOf(current_query) >=0) {
 					$(this).show();    	 	
 				};
@@ -394,5 +421,15 @@ $('#order-modal #search').keyup(function(){
 			$(".list-group .asset-item:not(.ignore-clone)").show();
 		};
 	});
+
+function updateStockDisplay(currentStockRemaining){
+  var assetId=$("#asset_name").attr("data-selected-id");
+  if(checkIfAssetExisting(assetId)){
+      var asset=getAssetExisting(assetId);
+      if(!IS_EDITING){
+        $("#asset-qty .info .amount").html(currentStockRemaining-asset.quantity);
+      }
+    }
+}
 
 </script>

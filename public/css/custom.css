@@ -256,3 +256,21 @@ table.dataTable thead .sorting_desc {
     padding: 0 8px;
     border-radius: 5px;
  }
+ .asset-item .price{
+   padding-left:12px;
+   color:#20A6D5;
+ }
+ 
+ .asset-item .price:before{
+    content:"-";
+    padding-right:12px;
+    color:#20A6D5;
+}
+#totalPrice{
+    padding: 6px 0;
+    text-align: center;
+}
+#totalPrice .amount{
+    font-weight: bolder;
+    font-size: large;
+}
