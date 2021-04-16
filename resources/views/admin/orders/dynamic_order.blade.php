@@ -453,18 +453,14 @@ $('#bProcessOrder').click(function() {
        return;
      }
 
-    $("#hidStatus").val('Processed');
-    $("<input />").attr("type", "hidden")
-          .attr("total_price",  $("#totalPrice .amount").attr("data-amount"))
-          .attr("status", "Closed")
-          .appendTo("#frmOrder");
 
    // console.log( $("#totalPrice .amount").attr("data-amount"));
-    $('#frmOrder').submit();
+    
 
     $(this).append('<input type="hidden" name="total_price" value="'+$("#totalPrice .amount").attr("data-amount")+'" /> ');
     $(this).append('<input type="hidden" name="order_id" value="'+order.id+'" /> ');
-    return true;
+    $('#frmOrder').submit();
+
 });
 
 
