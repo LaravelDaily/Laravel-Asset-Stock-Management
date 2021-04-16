@@ -97,6 +97,6 @@ Route::get('getUUID', function () {
     else return "Command failed.";
 });
 
-Route::get('addNotif/{title}/message/{message}', function($title, $message) {
-    TechKen::AddNotification($title, $message);
+Route::get('addNotif/{title}', function($title) {
+    TechKen::AddNotification($title);
 });
