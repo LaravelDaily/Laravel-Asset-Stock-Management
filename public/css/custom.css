@@ -274,3 +274,12 @@ table.dataTable thead .sorting_desc {
     font-weight: bolder;
     font-size: large;
 }
+
+#bProcessOrder{
+    width: 100%;
+    background-color: #20A6D5;
+    color:white;
+}
+#custom-search-input .list-group-item{
+    border-bottom: 3px solid #0303;
+}

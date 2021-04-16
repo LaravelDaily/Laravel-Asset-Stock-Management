@@ -13,7 +13,7 @@ foreach ($assets as $asset) {
     array_push($assetNames, $_asset);
 }
 ?>
-<div class="card-body" style="padding-bottom:0" id="order-modal">
+<div class="card-body" style="padding-bottom:0;padding-top:0" id="order-modal">
 
             <div class="form-group">
                 <label style="display:block"  for="branch">Branch</label>
@@ -46,21 +46,24 @@ foreach ($assets as $asset) {
                                  right: 3%;
                                  margin-top: 8px;"></i>
 						</div>
-						<ul class="card list-group" style="padding:8px;min-height:120px;max-height:120px;margin-bottom:0;overflow-y:auto">
+						<ul class="card list-group" style="padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
+              
+              
+              <!-- <span class="pull-right btn btn-danger"><i class="fa fa-delete" ></i></span> -->
+
               <span class="qty" >0</span>
+
               <span class="price"><span class="amount">00.00</span></span>
 
               </li>
 						</ul>
 
-                <div id="totalPrice" class="input-group mb-3">
-                    <input type="text" class="amount form-control" id="txtTotalPrice" name="total_price" placeholder="Total Price" aria-label="Total Price" aria-describedby="basic-addon2" readonly>
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="basic-addon2">Total PHP</span>
-                    </div>
-                </div>
-
+            <div id="totalPrice">
+              <div class="amount">00.00</div>
+              <div class="label">Total Price</div>
+            </div>
+            
 			</div>
 
 </div>
@@ -237,7 +240,7 @@ function getRemainingQty(){
     success:function(data){
 
       if(data.success!=null){
-        $("#asset-qty .info .amount").html(data.asset.currentStock);
+        $("#asset-qty .info .amount").html(data.asset.currentStock);  
         updateStockDisplay(data.asset.currentStock);
         $("#asset-qty .info .name").html(data.asset.name);
       }else{
@@ -262,10 +265,10 @@ function confirmQty(){
     order.branch_id=$("#order-branch").val();
     order.assetToAdd=$("#asset_name").attr("data-selected-id");
     order.assetQty=parseInt($("#asset-qty input").val());
-    order.total_price=$('#txtTotalPrice').val();
+    order.total_price=$("#totalPrice .amount").attr("data-amount");
     if(order.assetQty.toString().indexOf("e") >= 0){
         alert("Input is invalid");
-        return;
+        return; 
     }
     if(order.assetQty.toString().indexOf("-") !=-1){
         alert("Input is invalid");
@@ -367,10 +370,10 @@ function updateItemList(){
     }
     $(container).scrollTop(0);
 
-    $(".asset-item:not(.ignore-clone)").css("opacity",1);
-
-    //$("#totalPrice .amount").html(formatter.format(totalPrice));
-    $("#totalPrice .amount").val(totalPrice);     //value instead of html
+    $(".asset-item:not(.ignore-clone)").css("opacity",1); 
+   
+   $("#totalPrice .amount").html(formatter.format(totalPrice));
+   $("#totalPrice .amount").attr("data-amount",totalPrice);
   }
 
   $(".asset-item .qty").click(function(){
@@ -445,20 +448,24 @@ function updateStockDisplay(currentStockRemaining){
 }
 
 $('#bProcessOrder').click(function() {
-    //e.preventDefault();
-    var txtTotalPrice = $('#txtTotalPrice').val();
-    console.log("Total Price = " + txtTotalPrice);
-
-    if(txtTotalPrice=="")
-    {   alert("Unable to Process Order. Total Price is 0.00.");
-        return;
-    }
+     if(order==null){
+       alert("Cannot Process");
+       return;
+     }
 
     $("#hidStatus").val('Processed');
-    alert($("#hidStatus").val());
+    $("<input />").attr("type", "hidden")
+          .attr("total_price",  $("#totalPrice .amount").attr("data-amount"))
+          .attr("status", "Closed")
+          .appendTo("#frmOrder");
 
-    //confirmQty();
+   // console.log( $("#totalPrice .amount").attr("data-amount"));
     $('#frmOrder').submit();
+
+    $(this).append('<input type="hidden" name="total_price" value="'+$("#totalPrice .amount").attr("data-amount")+'" /> ');
+    $(this).append('<input type="hidden" name="order_id" value="'+order.id+'" /> ');
+    return true;
 });
+
 
 </script>
