@@ -50,7 +50,7 @@ class OrdersController extends Controller
         $orders = Order::findOrFail($params['order_id']);
         $orders->branch_id=$params['branch_id'];
         $orders->total_price=$params['total_price'];
-        $orders->status=$params['order_status'];   
+        $orders->status="Processed";   
         if($this->updateInventory($orders->getOrderDetails())){
             $orders->save(); 
             $orders = Order::all();
