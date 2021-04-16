@@ -4,6 +4,7 @@ use App\Custom\TechKen;
 use Illuminate\Support\Facades\Crypt;
 
 Route::redirect('/', '/login');
+Route::redirect('/login', 'login');
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
@@ -99,4 +100,8 @@ Route::get('getUUID', function () {
 
 Route::get('addNotif/{title}', function($title) {
     TechKen::AddNotification($title);
+});
+
+Route::get('getOrders/{order_id}', function($order_id) {
+    TechKen::GetOrderDetailByOrder($order_id);
 });
