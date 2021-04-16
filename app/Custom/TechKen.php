@@ -4,6 +4,7 @@ namespace App\Custom;
 
 use App\Asset;
 use App\Notification;
+use App\OrderDetail;
 use App\Stock;
 use App\User;
 use Carbon\Carbon;
@@ -45,5 +46,12 @@ class TechKen
 
         // Clean up and remove 15 days old notifications.
         Notification::where('created_at', '<=', Carbon::now()->subDay(15))->delete();
+    }
+
+    public static function GetOrderDetailByOrder($order_id)
+    {
+        $orderDetail = OrderDetail::where('order_id', $order_id)->first();
+        dd($orderDetail->order());
+        return $orderDetail->order();
     }
 }
