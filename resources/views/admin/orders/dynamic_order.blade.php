@@ -48,7 +48,7 @@ foreach ($assets as $asset) {
                                  right: 3%;
                                  margin-top: 8px;"></i>
 						</div>
-						<ul class="card list-group" style="padding:8px;min-height:240px;max-height:240px;margin-bottom:0;overflow-y:auto">
+						<ul class="card list-group" style="padding:8px;min-height:120px;max-height:120px;margin-bottom:0;overflow-y:auto">
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
               <span class="qty" >0</span>
               <span class="price"><span class="amount">00.00</span></span>
