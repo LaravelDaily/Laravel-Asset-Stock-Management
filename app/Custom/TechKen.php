@@ -13,7 +13,7 @@ class TechKen
     public $low_stock_title = 'Low Stock Item(s)';
     public $low_stock_message = '';
 
-    public static function AddNotification($title, $message)
+    public static function AddNotification($title)
     {
         // Check if there are low stock items
         $low_stock_message = '';
