@@ -3,7 +3,6 @@
 <?php
 use App\Branch;
 ?>
-@can('asset_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success add-order text-white"  data-url="{{ route('admin.dynamicOrder', 0) }}">
@@ -11,8 +10,6 @@ use App\Branch;
             </a>
         </div>
     </div>
-@endcan
-
 
 <div id="view-modal" class="modal fade" data-modal-index="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 <form id="frmOrder" method="POST" action="{{ route("admin.orders.store") }}" enctype="multipart/form-data">
