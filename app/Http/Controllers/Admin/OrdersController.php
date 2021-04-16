@@ -10,6 +10,7 @@ use App\Permission;
 use App\Order;
 use App\Asset;
 use App\Branch;
+use App\Custom\TechKen;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,17 +51,24 @@ class OrdersController extends Controller
         $orders = Order::findOrFail($params['order_id']);
         $orders->branch_id=$params['branch_id'];
         $orders->total_price=$params['total_price'];
-        $orders->status="Processed";   
+        $orders->status="Processed";
         if($this->updateInventory($orders->getOrderDetails())){
-            $orders->save(); 
+            $orders->save();
+
+            // NOTIF
+            TechKen::AddNotification("Low Stock");
+
             $orders = Order::all();
             return view('admin.orders.index', compact('orders'));
         }else{
+            // NOTIF
+            TechKen::AddNotification("Low Stock");
+
             $orders = Order::all();
             return view('admin.orders.index', compact('orders'))->with(["status"=>"Cannot Process this Order"]);
         }
-     
-      
+
+
     }
 
     public function updateInventory($order_details){
@@ -94,7 +102,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        
+
     }
 
     /**
