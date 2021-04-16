@@ -46,18 +46,45 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->order_status);
-        $orders = Order::findOrFail($request->order_id);
-        //dd($orders->status);
-        $orders->update([
-            'branch_id' => $request->branch_id,
-            'total_price' => $request->total_price,
-            'status' => (string) $request->order_status,
-        ]);
-
-        $orders = Order::all();
-        return view('admin.orders.index', compact('orders'));
+        $params=$request->all();
+        $orders = Order::findOrFail($params['order_id']);
+        $orders->branch_id=$params['branch_id'];
+        $orders->total_price=$params['total_price'];
+        $orders->status=$params['order_status'];   
+        if($this->updateInventory($orders->getOrderDetails())){
+            $orders->save(); 
+            $orders = Order::all();
+            return view('admin.orders.index', compact('orders'));
+        }else{
+            $orders = Order::all();
+            return view('admin.orders.index', compact('orders'))->with(["status"=>"Cannot Process this Order"]);
+        }
+     
+      
     }
+
+    public function updateInventory($order_details){
+        foreach($order_details as $item){
+            $_asset=Asset::find($item->asset_id);
+            if(isset($_asset)){
+                if($_asset->getStock()<$item->quantity){
+                    return false;
+                }
+            }else{
+                    return false;
+            }
+        }
+        foreach($order_details as $item){
+            $_asset=Asset::find($item->asset_id);
+            if(isset($_asset)){
+                $_asset->updateStock($_asset->getStock()-$item->quantity);
+            }else{
+                //Todo create logs here
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Display the specified resource.
@@ -67,7 +94,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -141,23 +168,23 @@ class OrdersController extends Controller
         if (!isset($order->id)) {
             $_order = new Order;
             $_order->branch_id = $order->branch_id;
-            $_order->total_price = 0;
             $_order->order_date = date("Y-m-d h:i:s");
+            $_order->branch_id=$order->branch_id;
+            $_order->total_price=0;
             $_order->save();
-
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
+            $_order->total_price=$_order->getTotalPrice();
+            $_order->save();
             $_order->itemList = $_order->getOrderDetails();
             return response()->json(['success' => 'Added item!', 'order' => $_order, 'addedOrder' => true]);
         } else {
-            $order_qry = Order::where('id', $order->id)
-                ->update([
-                    'branch_id' => $order->branch_id,
-                    'total_price' => $order->total_price,
-                    'status' => $order->status
-                ]);
-
             $_order = Order::find($order->id);
+            $_order->total_price=$order->total_price; //totalPrice
+            $_order->branch_id=$order->branch_id; //Branch updating
+            $_order->save();
             $_order->addOrderDetail($order->assetToAdd, $order->assetQty);
+            $_order->total_price=$_order->getTotalPrice();
+            $_order->save();
             $_order->itemList = $_order->getOrderDetails();
             return response()->json(['success' => 'Added item!', 'order' => $_order]);
         }

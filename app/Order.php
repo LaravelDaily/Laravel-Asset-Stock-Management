@@ -64,7 +64,7 @@ class Order extends Model
         $details   = DB::table('order_details')->where("order_id", $this->id)->get();
         $totalPrice=0;
         foreach ($details as $detail) {
-            $totalPrice+=$detail->price_total;
+            $totalPrice+=$detail->price_sell*$detail->quantity;
         }
         return $totalPrice;
     }

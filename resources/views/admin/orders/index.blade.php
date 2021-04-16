@@ -3,7 +3,15 @@
 <?php
 use App\Branch;
 ?>
-@can('asset_create')
+@if(isset($status))
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Alert!</strong> {{$status}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
+
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success add-order text-white"  data-url="{{ route('admin.dynamicOrder', 0) }}">
@@ -11,11 +19,11 @@ use App\Branch;
             </a>
         </div>
     </div>
-@endcan
 
 
 <div id="view-modal" class="modal fade" data-modal-index="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 <form id="frmOrder" method="POST" action="{{ route("admin.orders.store") }}" enctype="multipart/form-data">
+
 @csrf
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -26,7 +34,7 @@ use App\Branch;
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
                 </button>
             </div>
-            <div class="modal-body" style="padding-bottom:0">
+            <div class="modal-body" style="padding-bottom:0;padding-top:6px">
 
                    <div id="modal-loader"
                         style="display: none; text-align: center;">
@@ -39,7 +47,7 @@ use App\Branch;
 
             </div>
             <div class="modal-footer">
-                <button id="bProcessOrder" type="submit" class="btn btn-default">{{ trans('global.process_order') }}</button>
+                <p id="bProcessOrder"  class="btn btn-default">{{ trans('global.process_order') }}</p>
             </div>
 
          </div>
@@ -142,10 +150,13 @@ use App\Branch;
 
 
 
+
 @endsection
 @section('scripts')
 @parent
 <script>
+
+
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('order_delete')
