@@ -13,6 +13,7 @@ foreach ($assets as $asset) {
     array_push($assetNames, $_asset);
 }
 ?>
+  <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
 <div class="card-body" style="padding-bottom:0;padding-top:0" id="order-modal">
 
             <div class="form-group">
@@ -46,7 +47,7 @@ foreach ($assets as $asset) {
                                  right: 3%;
                                  margin-top: 8px;"></i>
 						</div>
-						<ul class="card list-group" style="padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
+						<ul class="card list-group" id="itemList" style="padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
               
               
@@ -63,6 +64,12 @@ foreach ($assets as $asset) {
               <div class="amount">00.00</div>
               <div class="label">Total Price</div>
             </div>
+            @if(isset($order))
+              @if($order->status=="Processed")
+                <span class="btn btn-success" id="btn-csv" style="margin-bottom:12px">Create CSV</span>
+                <span class="btn btn-success" id="btn-print" style="margin-bottom:12px">Print</span>
+              @endif
+            @endif
             
 			</div>
 
@@ -190,6 +197,14 @@ $('#asset-qty').on('hide.bs.modal', function(){
 $('#view-modal').on('shown.bs.modal', function(){
     $(this).find("#order-branch").focus();
     $(this).find("#order-branch").select();
+    if(order!=null){
+     // console.log(order);
+     if(order.status=="Processed"){
+       $("#bProcessOrder").css("display","none");
+     }else{
+      $("#bProcessOrder").css("display","block");
+     }
+    }
 });
 $('#view-modal').on('hide.bs.modal', function(){
     location.reload();
@@ -225,6 +240,11 @@ order.itemList=(<?php
 
 
    ?>);
+if(order.status=="Processed"){
+  $("#bProcessOrder").css("display","none");
+}else{
+$("#bProcessOrder").css("display","block");
+}   
 }
 updateItemList();
 
@@ -452,16 +472,44 @@ $('#bProcessOrder').click(function() {
        alert("Cannot Process");
        return;
      }
-
-
-   // console.log( $("#totalPrice .amount").attr("data-amount"));
-    
-
     $(this).append('<input type="hidden" name="total_price" value="'+$("#totalPrice .amount").attr("data-amount")+'" /> ');
     $(this).append('<input type="hidden" name="order_id" value="'+order.id+'" /> ');
     $('#frmOrder').submit();
 
 });
 
+$("#btn-csv").click(function(){
+  let csvContent = "data:text/csv;charset=utf-8,";
+  var _info=[("Order id:"+order.id)];
+  csvContent += _info.join(",") + "\r\n";
+  _info=["Branch","<?php echo Branch::find($order->branch_id)->name;?>"];
+  csvContent += _info.join(",") + "\r\n";
+  _info=["GrandTotal Price",($("#totalPrice .amount").attr("data-amount"))];
+  csvContent += _info.join(",") + "\r\n";
+  var _header=["Item Name","Selling Price","Quantity","Total Price"];
+  csvContent += _header.join(",") + "\r\n";
+  if(confirm("Extract order details?")){
+    order.itemList.forEach(function(rowArray) {
+    console.log(rowArray);
+    var _vals=[rowArray._asset.name,rowArray._asset.price_sell.toFixed(2),rowArray.quantity,(rowArray._asset.price_sell*rowArray.quantity).toFixed(2)];
 
+    let row = _vals.join(",");
+    csvContent += row + "\r\n";
+    });
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "order_"+order.id+".csv");
+    document.body.appendChild(link); // Required for FF
+    link.click();
+  }
+});
+$("#btn-print").click(function(){
+         window.frames["print_frame"].document.body.innerHTML = $("#itemList").html();
+         window.frames["print_frame"].window.focus();
+         window.frames["print_frame"].window.print();
+ 
+    
+
+});
 </script>

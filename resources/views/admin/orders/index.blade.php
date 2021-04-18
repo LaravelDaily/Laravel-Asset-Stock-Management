@@ -3,9 +3,11 @@
 <?php
 use App\Branch;
 ?>
-@if(isset($status))
+@if(session('params'))
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Alert!</strong> {{$status}}
+  <strong>Alert!</strong> {{session('params')['status']}}
+  <br/>
+  {{session('params')['reason']}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -136,7 +138,11 @@ use App\Branch;
                             <a class="btn btn-xs btn-primary text-white view-order"  data-url="{{ route('admin.dynamicOrder', $order->id ) }}">
                                  View Transaction
                              </a>
-
+                             @if($order->status=="Open")
+                             <a class="btn btn-xs btn-primary text-white"  href="{{ route("admin.processOrder",$order->id   ) }}">
+                                 Process
+                             </a>
+                             @endif
                             </td>
 
                         </tr>

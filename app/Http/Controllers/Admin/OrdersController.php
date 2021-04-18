@@ -57,7 +57,24 @@ class OrdersController extends Controller
             return view('admin.orders.index', compact('orders'));
         }else{
             $orders = Order::all();
-            return view('admin.orders.index', compact('orders'))->with(["status"=>"Cannot Process this Order"]);
+            return redirect('admin/orders')->with("params",["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
+        }
+     
+      
+    }
+    public function processOrder($orderId)
+    {
+     
+        $orders = Order::findOrFail($orderId);
+        $orders->status="Processed";  
+        if($this->updateInventory($orders->getOrderDetails())){
+            $orders->save(); 
+            $orders = Order::all();
+            return redirect('admin/orders', compact('orders'));
+        }else{
+            $orders = Order::all();
+            return redirect('admin/orders')->with("params",["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
+           // return redirect('admin/orders')->with(["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
         }
      
       
