@@ -30,7 +30,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
         'uses'=> 'OrdersController@loadInformation'
     ]);
     Route::post('ajaxRequest', 'OrdersController@ajaxRequestPost');
-    Route::post('processOrder', 'OrdersController@processOrder');
+    Route::get('processOrder/{orderId}', [
+        'as' => 'processOrder',
+        'uses' => 'OrdersController@processOrder'
+    ]);
 
 
     // Roles

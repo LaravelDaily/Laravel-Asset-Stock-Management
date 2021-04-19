@@ -260,7 +260,13 @@ table.dataTable thead .sorting_desc {
    padding-left:12px;
    color:#20A6D5;
  }
- 
+  .asset-item .remove-item{
+    float: right;
+    font-size: 9px;
+    margin-left: 8px;
+    position: relative;
+    top: -2px;
+ }
  .asset-item .price:before{
     content:"-";
     padding-right:12px;

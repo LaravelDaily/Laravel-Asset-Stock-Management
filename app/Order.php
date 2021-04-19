@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use App\OrderDetail;
 
 class Order extends Model
 {
@@ -39,9 +40,9 @@ class Order extends Model
     }
     public function getOrderDetails()
     {
-        $details   = DB::table('order_details')->where("order_id", $this->id)->get();
+        $details   = DB::table('order_details')->where("order_id", $this->id)->where("deleted_at",NULL)->get();
         foreach($details as $detail){
-            $asset=Asset::find($detail->asset_id);
+            $asset=Asset::find($detail->asset_id);            
             $detail->_asset=$asset;
         }
      
@@ -60,8 +61,21 @@ class Order extends Model
             'price_total'=>0
         ]);
     }
+    public function removeOrderDetail($assetId){
+        $id   = DB::table('order_details')->where("asset_id",$assetId)
+                   ->where("order_id",$this->id)
+                   ->value("id");
+        $orderDetail= OrderDetail::find($id);
+        if(isset($orderDetail)){
+            $orderDetail->delete();
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
     public function getTotalPrice(){
-        $details   = DB::table('order_details')->where("order_id", $this->id)->get();
+        $details   = DB::table('order_details')->where("order_id", $this->id)->where("deleted_at",NULL)->get();
         $totalPrice=0;
         foreach ($details as $detail) {
             $totalPrice+=$detail->price_sell*$detail->quantity;
