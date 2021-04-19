@@ -18,9 +18,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/@coreui/coreui@2.1.16/dist/css/coreui.min.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/2d26724d1b.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>  
+  <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     @yield('styles')
 </head>
 
@@ -53,6 +56,18 @@
 
 
         </ul>
+
+        <div class="mr-2">
+            <a class="btn btn-link" href="{{ route('admin.notifications.index') }}">
+                <i class="fas fa-bell" style="font-size:medium">
+                @if ($count_notification > 0)
+                <span class="badge badge-pill badge-danger">{{ $count_notification }}</span>
+                @endif
+                </i>
+            </a>
+
+        </div>
+
     </header>
 
     <div class="app-body">
@@ -107,6 +122,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(function() {
@@ -199,7 +215,7 @@
         className: 'btn-default',
         text: printButtonTrans,
         exportOptions: {
-          columns: ':visible'
+          columns: ':visible,:not(.no-print)'
         }
       },
       {
@@ -216,6 +232,14 @@
   $.fn.dataTable.ext.classes.sPageButton = '';
 });
 
+    </script>
+    <script>
+        $("#price_buy").blur(function() {
+            $('#price_buy').val(parseFloat(this.value).toFixed(2));
+        });
+        $("#price_sell").blur(function() {
+            $('#price_sell').val(parseFloat(this.value).toFixed(2));
+        });
     </script>
     @yield('scripts')
 </body>

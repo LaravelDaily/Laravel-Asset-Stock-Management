@@ -17,11 +17,18 @@ class AssetsTableSeeder extends Seeder
     public function run(): void
     {
         $assets = [
-            'gloves',
-            'masks',
-            'respirators',
-            'protective overalls',
-            'protective glasses',
+            'Adobo',
+            'Afritada',
+            'Bulalo',
+            'Beef Mami',
+            'Beef Tapa',
+            'Chicken Fried',
+            'Chopsuey',
+            'Corned Beef',
+            'Dinuguan',
+            'Menudo',
+            'Mechado',
+            'Sinigang',
         ];
 
         foreach ($assets as $asset) {

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use \DateTimeInterface;
 
 class Asset extends Model
@@ -26,6 +27,8 @@ class Asset extends Model
         'deleted_at',
         'description',
         'danger_level',
+        'price_buy',
+        'price_sell',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -37,4 +40,22 @@ class Asset extends Model
     {
         return $this->hasMany(Transaction::class, 'asset_id');
     }
+
+    public function getStock(){
+        $stock   = DB::table('stocks')->where("team_id",1)
+                   ->where("asset_id",$this->id)
+                   ->value("current_stock");
+                
+        return $stock;
+
+    }
+    public function updateStock($stock){
+        $stock   = DB::table('stocks')->where("team_id",1)
+                   ->where("asset_id",$this->id)
+                   ->update(["current_stock"=>$stock]);
+                
+        return $stock;
+
+    }
+
 }

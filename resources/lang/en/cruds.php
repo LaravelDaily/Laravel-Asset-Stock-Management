@@ -68,12 +68,12 @@ return [
         ],
     ],
     'asset'         => [
-        'title'          => 'Assets',
+        'title'          => 'Stock Management',
         'title_singular' => 'Asset',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => '',
-            'name'               => 'Name',
+            'name'               => 'Item Name',
             'name_helper'        => '',
             'description'        => 'Description',
             'description_helper' => '',
@@ -86,8 +86,8 @@ return [
         ],
     ],
     'team'           => [
-        'title'          => 'Hospitals',
-        'title_singular' => 'Hospital',
+        'title'          => 'Teams',
+        'title_singular' => 'Team',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => '',
@@ -143,4 +143,40 @@ return [
             'user_helper'       => '',
         ],
     ],
+    'branch'         => [
+        'title'          => 'Branches',
+        'title_singular' => 'Branch',
+        'fields'         => [
+            'id'                 => 'ID',
+            'id_helper'          => '',
+            'name'               => 'Name',
+            'name_helper'        => '',
+            'created_at'         => 'Created at',
+            'created_at_helper'  => '',
+            'updated_at'         => 'Updated at',
+            'updated_at_helper'  => '',
+            'deleted_at'         => 'Deleted at',
+            'deleted_at_helper'  => '',                        
+        ],
+    ],
+    'order'         => [
+        'title'          => 'Orders',
+        'title_singular' => 'Order',
+        'fields'         => [
+            'id'                 => 'ID',
+            'id_helper'          => '',
+            'name'               => 'Name',
+            'name_helper'        => '',
+            'created_at'         => 'Created at',
+            'created_at_helper'  => '',
+            'updated_at'         => 'Updated at',
+            'updated_at_helper'  => '',
+            'deleted_at'         => 'Deleted at',
+            'deleted_at_helper'  => '',
+            'status'         => 'Status',
+            'status_helper'  => '',
+            'total_price'    => 'Total Price',
+            'asset_name'    => 'Stock Item',
+        ],
+    ]
 ];

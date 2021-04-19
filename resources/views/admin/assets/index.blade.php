@@ -9,6 +9,47 @@
         </div>
     </div>
 @endcan
+
+<div id="view-modal" class="modal fade"  
+    tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" 
+    aria-hidden="true" style="display: none;">
+     <div class="modal-dialog"> 
+          <div class="modal-content"> 
+
+               <div class="modal-header"> 
+                    <h4 class="modal-title">
+                     Stock Information
+                    </h4> 
+                    <button type="button" class="close" 
+                        data-dismiss="modal" 
+                        aria-hidden="true">
+                        ×
+                     </button> 
+               </div> 
+               <div class="modal-body"> 
+
+                   <div id="modal-loader" 
+                        style="display: none; text-align: center;">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/images/ajax-loader.gif">
+                   </div>
+
+                   <!-- content will be load here -->                          
+                   <div id="dynamic-content"></div>
+
+                </div> 
+                <div class="modal-footer"> 
+                      <button type="button" 
+                          class="btn btn-default">
+                          {{ trans('global.save') }}
+                      </button>  
+                </div> 
+
+         </div> 
+      </div>
+</div><!-- /.modal -->   
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.asset.title_singular') }} {{ trans('global.list') }}
@@ -29,19 +70,22 @@
                             {{ trans('cruds.asset.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.asset.fields.description') }}
+                            Bought Price
                         </th>
                         <th>
-                            Danger level
+                            Sell Price
                         </th>
                         <th>
+                           Current Stock
+                        </th>
+                        <th class="no-print">
                             &nbsp;
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($assets as $key => $asset)
-                        <tr data-entry-id="{{ $asset->id }}">
+                        <tr class="asset-item" data-entry-id="{{ $asset->id }}">
                             <td>
 
                             </td>
@@ -52,24 +96,24 @@
                                 {{ $asset->name ?? '' }}
                             </td>
                             <td>
-                                {{ $asset->description ?? '' }}
+                                {{ number_format($asset->price_buy, 2) ?? '0.00' }}
                             </td>
                             <td>
-                                {{ $asset->danger_level }}
+                                {{ number_format($asset->price_sell, 2) ?? '0.00' }}
+                            </td>
+                            <td <?php 
+                                if($asset->getStock()<=$asset->danger_level){
+                                    echo "class='low-onstock'";
+                                } 
+                            ?> >
+                                {{ $asset->getStock() }}
                             </td>
                             <td>
                                 @can('asset_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.assets.show', $asset->id) }}">
-                                        {{ trans('global.view') }}
+                                <a class="btn btn-xs btn-primary view-asset" data-url="{{ route('admin.dynamicAsset', $asset->id) }}" data-toggle="modal" data-target="#view-modal">
+                                        {{ trans('global.update') }}
                                     </a>
                                 @endcan
-
-                                @can('asset_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.assets.edit', $asset->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
-
                                 @can('asset_delete')
                                     <form action="{{ route('admin.assets.destroy', $asset->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
@@ -136,6 +180,35 @@
             .columns.adjust();
     });
 })
+
+$(".view-asset").click(function(){
+  $("#view-modal").fadeIn();
+  $('#dynamic-content').html(''); // leave it blank before ajax call
+  $('#modal-loader').show();      // load ajax loader
+  var url = $(this).data('url');
+  $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'html'
+        })
+    .done(function(data){
+            $('#dynamic-content').html('');    
+            $('#dynamic-content').html(data); // load response 
+            $('#modal-loader').hide();        // hide ajax loader  
+            $("#view-modal .modal-footer button").click(function(){
+                $("#view-modal #save-data").click();
+            }); 
+        })
+    .fail(function(){
+            $('#dynamic-content').html('<i class="glyphicon glyphicon-info-sign"></i> Something went wrong, Please try again...');
+            $('#modal-loader').hide();
+    });
+
+
+
+});
+
+
 
 </script>
 @endsection

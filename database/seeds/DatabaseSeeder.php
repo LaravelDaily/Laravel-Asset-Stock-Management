@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeders\BranchesTableSeeder;
 use Illuminate\Database\Seeder;
 
 /**
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
             RoleUserTableSeeder::class,
             TeamsTableSeeder::class,
             AssetsTableSeeder::class,
+            BranchesTableSeeder::class,
         ]);
-
     }
 }

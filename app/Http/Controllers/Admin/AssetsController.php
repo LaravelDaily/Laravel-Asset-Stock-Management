@@ -32,7 +32,7 @@ class AssetsController extends Controller
     public function store(StoreAssetRequest $request)
     {
         $asset = Asset::create($request->all());
-
+        $asset->updateStock($request->all()['current_stock']);
         return redirect()->route('admin.assets.index');
 
     }
@@ -47,7 +47,7 @@ class AssetsController extends Controller
     public function update(UpdateAssetRequest $request, Asset $asset)
     {
         $asset->update($request->all());
-
+        $asset->updateStock($request->all()['current_stock']);
         return redirect()->route('admin.assets.index');
 
     }
@@ -75,5 +75,8 @@ class AssetsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
 
+    }
+    public function loadInformation($id){
+        return view('admin.assets.dynamic_edit',['asset'=> Asset::find($id)]);
     }
 }
