@@ -140,7 +140,6 @@ class OrdersController extends Controller
                     return "Cannot process deleted items.";
             }
         }
-        return "FUCK YOU!";
         foreach ($order_details as $item) {
             $_asset=Asset::find($item->asset_id);
             if (isset($_asset)) {
