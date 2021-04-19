@@ -46,7 +46,7 @@ class OrdersController extends Controller
             }
 
             if($request->has('ddStatus')) {
-                if($request->ddStatus != 'Select Status')
+                if($request->ddStatus != 'All')
                     $qry->where('status', $request->ddStatus);
             }
 
