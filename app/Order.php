@@ -42,7 +42,13 @@ class Order extends Model
     {
         $details   = DB::table('order_details')->where("order_id", $this->id)->where("deleted_at",NULL)->get();
         foreach($details as $detail){
-            $asset=Asset::find($detail->asset_id);            
+            $asset=Asset::withTrashed()->find($detail->asset_id);  
+            if(isset($asset->deleted_at)){
+                $asset->name.="<i class='color-red'>(deleted)</i>";
+            }    
+            if ($asset->getStock()<$detail->quantity && $this->status=="Open") {
+                $asset->name.="<i class='color-red'>(insufficient stock)</i>";
+            }
             $detail->_asset=$asset;
         }
      
@@ -50,7 +56,7 @@ class Order extends Model
     }
     public function addOrderDetail($assetId, $qty)
     { 
-        $asset=Asset::find($assetId);
+        $asset=Asset::withTrashed()->find($assetId);
        // $totalPrice=$asset->price_sell*$qty;
         $orderDetail=OrderDetail::updateOrCreate([
             'asset_id'=>$assetId,

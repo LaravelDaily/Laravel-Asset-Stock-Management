@@ -2,6 +2,7 @@
 @section('content')
 <?php
 use App\Branch;
+$ddBranches=Branch::all();
 ?>
 @if(session('params'))
 <div class="alert alert-warning alert-dismissible fade show" role="alert">

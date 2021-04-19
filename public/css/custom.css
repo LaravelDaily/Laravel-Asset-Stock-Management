@@ -289,3 +289,6 @@ table.dataTable thead .sorting_desc {
 #custom-search-input .list-group-item{
     border-bottom: 3px solid #0303;
 }
+.color-red{
+    color:red;
+}

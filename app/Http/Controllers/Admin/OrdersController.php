@@ -23,31 +23,34 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
     public function index(Request $request)
     {
         //dd($request->all());
 
-        if(!count($request->all())>0) {
+        if (!count($request->all())>0) {
             $orders = Order::all();
-        }
-        else {
+        } else {
             $qry = Order::query();
 
-            if($request->has('dateFrom') && $request->dateFrom != null && $request->has('dateTo') && $request->dateTo != null) {
+            if ($request->has('dateFrom') && $request->dateFrom != null && $request->has('dateTo') && $request->dateTo != null) {
                 $ds = Carbon::createFromFormat('Y-m-d', $request->dateFrom);
                 $de = Carbon::createFromFormat('Y-m-d', $request->dateTo);
 
                 $qry->WhereBetween('updated_at', [$ds->startOfDay(), $de->endOfDay()]);
             }
 
-            if($request->has('branchID')) {
-                if($request->branchID != 'Select Branch')
+            if ($request->has('branchID')) {
+                if ($request->branchID != 'Select Branch') {
                     $qry->where('branch_id', (int) $request->branchID);
+                }
             }
 
-            if($request->has('ddStatus')) {
-                if($request->ddStatus != 'All')
+            if ($request->has('ddStatus')) {
+                if ($request->ddStatus != 'All') {
                     $qry->where('status', $request->ddStatus);
+                }
             }
 
 
@@ -78,12 +81,14 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
+       
         $params=$request->all();
         $orders = Order::findOrFail($params['order_id']);
         $orders->branch_id=$params['branch_id'];
         $orders->total_price=$params['total_price'];
         $orders->status="Processed";
-        if($this->updateInventory($orders->getOrderDetails())){
+        $reasonProcess=$this->updateInventory($orders->getOrderDetails());
+        if ($reasonProcess=="true") {
             $orders->save();
 
             // NOTIF
@@ -91,53 +96,60 @@ class OrdersController extends Controller
 
             $orders = Order::all();
             return view('admin.orders.index', compact('orders'));
-        }else{
+        } else {
             // NOTIF
             TechKen::AddNotification("Low Stock");
 
             $orders = Order::all();
-            return redirect('admin/orders')->with("params",["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
+            return redirect('admin/orders')->with("params", ["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>$reasonProcess]);
         }
-
-
     }
     public function processOrder($orderId)
     {
-
+       
+        $reasonProcess="";
         $orders = Order::findOrFail($orderId);
         $orders->status="Processed";
-        if($this->updateInventory($orders->getOrderDetails())){
+        $reasonProcess=$this->updateInventory($orders->getOrderDetails());
+        if ($reasonProcess=="true") {
             $orders->save();
+            TechKen::AddNotification("Low Stock");
             $orders = Order::all();
             return redirect('admin/orders', compact('orders'));
-        }else{
+        } else {
             $orders = Order::all();
-            return redirect('admin/orders')->with("params",["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
+            TechKen::AddNotification("Low Stock");
+
+            return redirect('admin/orders')->with("params", ["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>reasonProcess]);
         }
-
-
     }
 
-    public function updateInventory($order_details){
-        foreach($order_details as $item){
+    public function updateInventory($order_details)
+    {
+        foreach ($order_details as $item) {
             $_asset=Asset::find($item->asset_id);
-            if(isset($_asset)){
-                if($_asset->getStock()<$item->quantity){
-                    return false;
+            if (isset($_asset)) {
+                if ($_asset->getStock()<$item->quantity) {
+                    return "Some items are low on stock.";
                 }
-            }else{
-                    return false;
+                if (isset($_asset->deleted_at)) {
+                    return "Cannot process deleted items.";
+                }
+
+            } else {
+                    return "Cannot process deleted items.";
             }
         }
-        foreach($order_details as $item){
+        return "FUCK YOU!";
+        foreach ($order_details as $item) {
             $_asset=Asset::find($item->asset_id);
-            if(isset($_asset)){
+            if (isset($_asset)) {
                 $_asset->updateStock($_asset->getStock()-$item->quantity);
-            }else{
+            } else {
                 //Todo create logs here
             }
         }
-        return true;
+        return "true";
     }
 
 
@@ -149,7 +161,6 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -172,7 +183,6 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-
     }
 
     /**
@@ -202,7 +212,7 @@ class OrdersController extends Controller
         if ($input['action'] == "getAssetInfo") {
             return $this->checkAssetInfo(($input['assetId']));
         }
-        if($input['action']=="removeOrder"){
+        if ($input['action']=="removeOrder") {
             return $this->removeOrder($input['params']);
         }
 
@@ -216,21 +226,22 @@ class OrdersController extends Controller
             return response()->json(['success' => true, 'asset' => $asset]);
         }
     }
-    public function removeOrder($params){
+    public function removeOrder($params)
+    {
         $params=(json_decode($params));
         $_order = Order::find($params->orderId);
-        if($_order->removeOrderDetail($params->assetId)){
+        if ($_order->removeOrderDetail($params->assetId)) {
             $_order->total_price=$_order->getTotalPrice();
             $_order->save();
-             return response()->json(['success' => 'Removed item!', 'itemList' =>  $_order->getOrderDetails()]);
-        }else{
+            return response()->json(['success' => 'Removed item!', 'itemList' =>  $_order->getOrderDetails()]);
+        } else {
             return response()->json(['fail' => 'Cannot remove an item. Contact developers']);
         }
     }
     public function saveOrder($order)
     {
         $asset=Asset::find($order->assetToAdd);
-        if($asset->getStock()<$order->assetQty){
+        if ($asset->getStock()<$order->assetQty) {
             return response()->json(['fail'=>'Not Enough Stock']);
         }
 
@@ -260,5 +271,4 @@ class OrdersController extends Controller
             return response()->json(['success' => 'Added item!', 'order' => $_order]);
         }
     }
-
 }
