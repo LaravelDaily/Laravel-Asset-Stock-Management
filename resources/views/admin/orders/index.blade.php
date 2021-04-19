@@ -15,11 +15,49 @@ use App\Branch;
 @endif
 
     <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
+        <div class="col">
             <a class="btn btn-success add-order text-white"  data-url="{{ route('admin.dynamicOrder', 0) }}">
                 {{ trans('global.add_order') }}
             </a>
         </div>
+
+        <div class="col-lg-10">
+        <form class="form-inline float-right" action="" method="GET">
+
+            <!-- dateFrom -->
+            <label class="sr-only" for="dateFrom">yyyy-mm-dd</label>
+            <div class="input-group mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Date From:</div>
+                </div>
+                <input type="text" class="form-control dateInputFormat" name="dateFrom" id="dateFrom" placeholder="yyyy-mm-dd">
+            </div>
+
+            <!-- dateTo -->
+            <label class="sr-only" for="dateTo">yyyy-mm-dd</label>
+            <div class="input-group mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Date To:</div>
+                </div>
+                <input type="text" class="form-control dateInputFormat" name="dateTo" id="dateTo" placeholder="yyyy-mm-dd">
+            </div>
+
+            <select name="branchID" class="form-control mr-sm-2">
+                <option>Select Branch</option>
+                @foreach($ddBranches as $key => $branch)
+                <option value="{{ $branch->id }}">{{ $branch->name ?? ''}}</option>
+                @endforeach
+            </select>
+
+            <select name="ddStatus" class="form-control mr-sm-2">
+                <option value="All">Select Status</option>
+                <option value="Open">Open</option>
+                <option value="Processed">Processed</option>
+            </select>
+
+            <button type="submit" class="btn btn-warning text-black">{{ trans('global.filter') }}</button>
+        </form>
+    </div>
     </div>
 
 <div id="view-modal" class="modal fade" data-modal-index="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -242,6 +280,8 @@ $(".add-order,.view-order").click(function(){
     });
 });
 
+$("#dateFrom").datepicker({ dateFormat: "yy-mm-dd" });
+$("#dateTo").datepicker({ dateFormat: "yy-mm-dd" });
 
 
 </script>

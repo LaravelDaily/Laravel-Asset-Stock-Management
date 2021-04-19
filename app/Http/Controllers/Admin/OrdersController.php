@@ -11,6 +11,7 @@ use App\Order;
 use App\Asset;
 use App\Branch;
 use App\Custom\TechKen;
+use Carbon\Carbon;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +23,41 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::all();
+        //dd($request->all());
 
-        return view('admin.orders.index', compact('orders'));
+        if(!count($request->all())>0) {
+            $orders = Order::all();
+        }
+        else {
+            $qry = Order::query();
+
+            if($request->has('dateFrom') && $request->dateFrom != null && $request->has('dateTo') && $request->dateTo != null) {
+                $ds = Carbon::createFromFormat('Y-m-d', $request->dateFrom);
+                $de = Carbon::createFromFormat('Y-m-d', $request->dateTo);
+
+                $qry->WhereBetween('updated_at', [$ds->startOfDay(), $de->endOfDay()]);
+            }
+
+            if($request->has('branchID')) {
+                if($request->branchID != 'Select Branch')
+                    $qry->where('branch_id', (int) $request->branchID);
+            }
+
+            if($request->has('ddStatus')) {
+                if($request->ddStatus != 'Select Status')
+                    $qry->where('status', $request->ddStatus);
+            }
+
+
+            $orders = $qry->get();
+            //dd($orders);
+        }
+
+        $ddBranches = Branch::all();
+
+        return view('admin.orders.index', compact('orders', 'ddBranches'));
     }
 
     /**
@@ -67,16 +98,16 @@ class OrdersController extends Controller
             $orders = Order::all();
             return redirect('admin/orders')->with("params",["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>"Not enough stock available on some items."]);
         }
-     
-      
+
+
     }
     public function processOrder($orderId)
     {
-     
+
         $orders = Order::findOrFail($orderId);
-        $orders->status="Processed";  
+        $orders->status="Processed";
         if($this->updateInventory($orders->getOrderDetails())){
-            $orders->save(); 
+            $orders->save();
             $orders = Order::all();
             return redirect('admin/orders', compact('orders'));
         }else{
