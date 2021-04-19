@@ -12,6 +12,11 @@ foreach ($assets as $asset) {
     $_asset->id=$asset->id;
     array_push($assetNames, $_asset);
 }
+if(!isset($order)){
+  $order=new stdClass();
+  $order->status="Open";
+  $order->branch_id=0;
+}
 ?>
   <iframe name="print_frame" width="0" height="0"  frameborder="0" src="about:blank"></iframe>
 <div class="card-body" style="padding-bottom:0;padding-top:0" id="order-modal">
@@ -93,12 +98,12 @@ var formatter = new Intl.NumberFormat('en-PH', {
 });
 var assetNames=<?php echo json_encode($assetNames);?>;
 
-@if(isset($order))
+@if(isset($order->id))
 $("#view-modal .modal-title").html("Order #"+<?php echo $order->id;?>);
 $("#hidOrderID").val(<?php echo $order->id;?>); // ADD ORDER ID TO HIDDEN INPUT
 $("#hidStatus").val('<?php echo $order->status;?>'); // ADD STATUS TO HIDDEN INPUT
 @endif
-@if(!isset($order))
+@if(!isset($order->id))
 $("#view-modal .modal-title").html("Add Order");
 $("#hidOrderID").val(null); // ADD ORDER ID TO HIDDEN INPUT
 $("#hidStatus").val(''); // ADD STATUS TO HIDDEN INPUT
@@ -235,7 +240,7 @@ headers: {
 
 //ORDER OBJ
 var order=(<?php
-            if (isset($order)) {
+            if (isset($order->id)) {
                 echo($order);
             } else {
                 echo json_encode(new stdClass());
@@ -244,7 +249,7 @@ var order=(<?php
 if(order!=null){
 order.itemList=(<?php
 
-   if (isset($order)) {
+   if (isset($order->id)) {
        echo($order->getOrderDetails());
    } else {
        echo "[]";
@@ -493,7 +498,7 @@ $('#bProcessOrder').click(function() {
     $('#frmOrder').submit();
 
 });
-
+@if(isset($order->id))
 $("#btn-csv").click(function(){
   let csvContent = "data:text/csv;charset=utf-8,";
   var _info=[("Order id:"+order.id)];
@@ -525,6 +530,7 @@ $("#btn-print").click(function(){
          window.frames["print_frame"].window.focus();
          window.frames["print_frame"].window.print();
 });
+@endif
 var removeOrder=null;
 
 function removeOrderOnClick(element){
