@@ -13,12 +13,16 @@ foreach ($assets as $asset) {
     array_push($assetNames, $_asset);
 }
 ?>
-  <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
+  <iframe name="print_frame" width="0" height="0"  frameborder="0" src="about:blank"></iframe>
 <div class="card-body" style="padding-bottom:0;padding-top:0" id="order-modal">
 
             <div class="form-group">
                 <label style="display:block"  for="branch">Branch</label>
-                <select id="order-branch" name="branch_id" class="form-control">
+                <select id="order-branch" name="branch_id" class="form-control"
+                @if($order->status=="Processed")
+                  disabled
+                @endif
+                >
 
                     <option <?php if (!isset($order)) {
     echo 'selected';
@@ -33,11 +37,13 @@ foreach ($assets as $asset) {
                 </select>
                 <span class="help-block"></span>
             </div>
+            @if($order->status=="Open")
             <div class="form-group">
                 <label  for="asset_name">{{ trans('cruds.order.fields.asset_name') }}</label>
                 <input class="form-control" data-selected-id=0 type="text" id="asset_name" value="" >
                 <span class="btn btn-success add-asset"  tabindex="0">ADD</span>
             </div>
+            @endif
 
             <div id="custom-search-input">
 						<div class="input-group"  style="margin-bottom:8px">
@@ -47,13 +53,19 @@ foreach ($assets as $asset) {
                                  right: 3%;
                                  margin-top: 8px;"></i>
 						</div>
-						<ul class="card list-group" id="itemList" style="padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
+						<ul class="card list-group" id="itemList" style="background-color:#cecece;padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
               
               
               <!-- <span class="pull-right btn btn-danger"><i class="fa fa-delete" ></i></span> -->
-
+              @if($order->status=="Open")
+              <span class="remove-item btn btn-danger" >
+                <i class="fa fa-trash">
+                </i>
+              </span>
+              @endif
               <span class="qty" >0</span>
+              
 
               <span class="price"><span class="amount">00.00</span></span>
 
@@ -316,9 +328,7 @@ function confirmQty(){
         return;
     }
 
-    console.log(JSON.stringify(order));
-
-    savingOrder=$.ajax({
+  savingOrder=$.ajax({
     type:'POST',
     url:'ajaxRequest',
     data:{action:"saveOrder",order:JSON.stringify(order)},
@@ -363,6 +373,8 @@ function updateItemList(){
   var totalPrice=0;
   var _itemList=order.itemList;
   if(_itemList==null){
+    $("#totalPrice .amount").html(formatter.format(totalPrice));
+   $("#totalPrice .amount").attr("data-amount",totalPrice);
       return;
   }
   for (index = 0; index < _itemList.length; ++index) {
@@ -387,6 +399,9 @@ function updateItemList(){
       $(newElement).find(".price .amount").html(formatter.format(_itemList[index]._asset.price_sell));
       $(container).prepend(newElement);
       $(newElement).fadeIn("slow");
+      $(newElement).find(".remove-item").click(function(){
+        removeOrderOnClick(this);
+      });
     }
     $(container).scrollTop(0);
 
@@ -394,6 +409,7 @@ function updateItemList(){
    
    $("#totalPrice .amount").html(formatter.format(totalPrice));
    $("#totalPrice .amount").attr("data-amount",totalPrice);
+   
   }
 
   $(".asset-item .qty").click(function(){
@@ -508,8 +524,46 @@ $("#btn-print").click(function(){
          window.frames["print_frame"].document.body.innerHTML = $("#itemList").html();
          window.frames["print_frame"].window.focus();
          window.frames["print_frame"].window.print();
- 
-    
-
 });
+var removeOrder=null;
+
+function removeOrderOnClick(element){
+  if(!confirm("Are you sure removing this item?")){
+    return;
+  }
+  if(removeOrder!=null){
+    return;
+  }
+  var assetId=$(element).closest(".asset-item").attr("data-asset-id");
+  var assetElement=$(element).closest(".asset-item");
+  var params={};
+  params.assetId=assetId;
+  params.orderId=order.id;
+  removeOrder=$.ajax({
+    type:'POST',
+    url:'ajaxRequest',
+    data:{action:"removeOrder",params:JSON.stringify(params)},
+    success:function(_data){
+      if(_data.success!=null){
+        alert(_data.success);
+        $(assetElement).fadeOut( "slow", function() {
+          $(assetElement).remove();
+          order.itemList=_data.itemList;
+          if(_data.itemList.length==0){
+            $("#totalPrice .amount").html(formatter.format(0));
+            $("#totalPrice .amount").attr("data-amount",0);
+            return;
+          }
+          updateItemList();
+        });
+        
+      }else{
+        alert(_data.fail);
+      }
+      removeOrder=null;
+    }
+  });
+}
+
+
 </script>
