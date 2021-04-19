@@ -115,7 +115,7 @@ class OrdersController extends Controller
             $orders->save();
             TechKen::AddNotification("Low Stock");
             $orders = Order::all();
-            return redirect('admin/orders')->with("params", ["orders"=>$orders,"status"=>"Cannot Process this Order","reason"=>$reasonProcess]);
+            return redirect('admin/orders')->with("params", ["orders"=>$orders,"status"=>"","reason"=>"Successfully Processed Order#".$orderId]);
         } else {
             $orders = Order::all();
             TechKen::AddNotification("Low Stock");
