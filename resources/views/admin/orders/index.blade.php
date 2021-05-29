@@ -135,6 +135,9 @@ $ddBranches=Branch::all();
                             {{ trans('cruds.order.fields.id') }}
                         </th>
                         <th>
+                            {{ trans('cruds.order.fields.branch_order_code') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.branch.title_singular') }}
                         </th>
                         <th>
@@ -159,6 +162,9 @@ $ddBranches=Branch::all();
                             </td>
                             <td>
                                 {{ $order->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $order->branch_order_code ?? 'BR#-########' }}
                             </td>
                             <td>
                                 {{ Branch::find($order->branch_id)->name?? '' }}

@@ -60,8 +60,8 @@ if(!isset($order)){
 						</div>
 						<ul class="card list-group" id="itemList" style="background-color:#cecece;padding:8px;min-height:160px;max-height:160px;margin-bottom:0;overflow-y:auto">
 							<li class="list-group-item asset-item ignore-clone" style="display:none"><span class="assetname">Cras justo odio</span>
-              
-              
+
+
               <!-- <span class="pull-right btn btn-danger"><i class="fa fa-delete" ></i></span> -->
               @if($order->status=="Open")
               <span class="remove-item btn btn-danger" >
@@ -70,7 +70,7 @@ if(!isset($order)){
               </span>
               @endif
               <span class="qty" >0</span>
-              
+
 
               <span class="price"><span class="amount">00.00</span></span>
 
@@ -87,7 +87,7 @@ if(!isset($order)){
                 <span class="btn btn-success" id="btn-print" style="margin-bottom:12px">Print</span>
               @endif
             @endif
-            
+
 			</div>
 
 </div>
@@ -99,7 +99,7 @@ var formatter = new Intl.NumberFormat('en-PH', {
 var assetNames=<?php echo json_encode($assetNames);?>;
 
 @if(isset($order->id))
-$("#view-modal .modal-title").html("Order #"+<?php echo $order->id;?>);
+$("#view-modal .modal-title").html("Order #{{$order->branch_order_code}}");
 $("#hidOrderID").val(<?php echo $order->id;?>); // ADD ORDER ID TO HIDDEN INPUT
 $("#hidStatus").val('<?php echo $order->status;?>'); // ADD STATUS TO HIDDEN INPUT
 @endif
@@ -261,7 +261,7 @@ if(order.status=="Processed"){
   $("#bProcessOrder").css("display","none");
 }else{
 $("#bProcessOrder").css("display","block");
-}   
+}
 }
 updateItemList();
 
@@ -277,7 +277,7 @@ function getRemainingQty(){
     success:function(data){
 
       if(data.success!=null){
-        $("#asset-qty .info .amount").html(data.asset.currentStock);  
+        $("#asset-qty .info .amount").html(data.asset.currentStock);
         updateStockDisplay(data.asset.currentStock);
         $("#asset-qty .info .name").html(data.asset.name);
       }else{
@@ -305,7 +305,7 @@ function confirmQty(){
     order.total_price=$("#totalPrice .amount").attr("data-amount");
     if(order.assetQty.toString().indexOf("e") >= 0){
         alert("Input is invalid");
-        return; 
+        return;
     }
     if(order.assetQty.toString().indexOf("-") !=-1){
         alert("Input is invalid");
@@ -410,11 +410,11 @@ function updateItemList(){
     }
     $(container).scrollTop(0);
 
-    $(".asset-item:not(.ignore-clone)").css("opacity",1); 
-   
+    $(".asset-item:not(.ignore-clone)").css("opacity",1);
+
    $("#totalPrice .amount").html(formatter.format(totalPrice));
    $("#totalPrice .amount").attr("data-amount",totalPrice);
-   
+
   }
 
   $(".asset-item .qty").click(function(){
@@ -562,7 +562,7 @@ function removeOrderOnClick(element){
           }
           updateItemList();
         });
-        
+
       }else{
         alert(_data.fail);
       }
