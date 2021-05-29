@@ -23,6 +23,8 @@ class Order extends Model
 
     protected $fillable = [
         'branch_id',
+        'branch_order_no',
+        'branch_order_code',
         'total_price',
         'order_date',
         'created_at',
@@ -42,20 +44,20 @@ class Order extends Model
     {
         $details   = DB::table('order_details')->where("order_id", $this->id)->where("deleted_at",NULL)->get();
         foreach($details as $detail){
-            $asset=Asset::withTrashed()->find($detail->asset_id);  
+            $asset=Asset::withTrashed()->find($detail->asset_id);
             if(isset($asset->deleted_at)){
                 $asset->name.="<i class='color-red'>(deleted)</i>";
-            }    
+            }
             if ($asset->getStock()<$detail->quantity && $this->status=="Open") {
                 $asset->name.="<i class='color-red'>(insufficient stock)</i>";
             }
             $detail->_asset=$asset;
         }
-     
+
         return $details;
     }
     public function addOrderDetail($assetId, $qty)
-    { 
+    {
         $asset=Asset::withTrashed()->find($assetId);
        // $totalPrice=$asset->price_sell*$qty;
         $orderDetail=OrderDetail::updateOrCreate([
@@ -78,7 +80,7 @@ class Order extends Model
         }else{
             return false;
         }
-        
+
     }
     public function getTotalPrice(){
         $details   = DB::table('order_details')->where("order_id", $this->id)->where("deleted_at",NULL)->get();
@@ -88,4 +90,10 @@ class Order extends Model
         }
         return $totalPrice;
     }
+
+    public function getMaxBranchOrderNo($branch_id) {
+        $maxBON = Order::where('branch_id', $branch_id)->max('branch_order_no');
+        return $maxBON;
+    }
+
 }

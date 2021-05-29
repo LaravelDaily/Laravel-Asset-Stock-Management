@@ -24,7 +24,7 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
     public function index(Request $request)
     {
         //dd($request->all());
@@ -81,7 +81,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $params=$request->all();
         $orders = Order::findOrFail($params['order_id']);
         $orders->branch_id=$params['branch_id'];
@@ -106,7 +106,7 @@ class OrdersController extends Controller
     }
     public function processOrder($orderId)
     {
-       
+
         $reasonProcess="";
         $orders = Order::findOrFail($orderId);
         $orders->status="Processed";
@@ -244,9 +244,16 @@ class OrdersController extends Controller
             return response()->json(['fail'=>'Not Enough Stock']);
         }
 
+        $prefix = "BR";     // means BRANCH
+        $pad_length = 8;    // adds zero padding
+
         if (!isset($order->id)) {
             $_order = new Order;
             $_order->branch_id = $order->branch_id;
+            $_order->branch_order_no = $_order->getMaxBranchOrderNo($order->branch_id) + 1;
+            // sample: branch_order_code -> BR1-00000001
+            $padded_order_no = str_pad($_order->branch_order_no, $pad_length, '0', STR_PAD_LEFT);
+            $_order->branch_order_code = $prefix.$_order->branch_id."-".$padded_order_no;
             $_order->order_date = date("Y-m-d h:i:s");
             $_order->branch_id=$order->branch_id;
             $_order->total_price=0;
