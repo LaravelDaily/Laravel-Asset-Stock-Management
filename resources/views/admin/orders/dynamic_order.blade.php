@@ -18,7 +18,7 @@ if(!isset($order)){
   $order->branch_id=0;
 }
 ?>
-  <iframe name="print_frame" width="0" height="0"  frameborder="0" src="about:blank"></iframe>
+
 <div class="card-body" style="padding-bottom:0;padding-top:0" id="order-modal">
 
             <div class="form-group">
@@ -90,6 +90,22 @@ if(!isset($order)){
             
 			</div>
 
+</div>
+<div id="print_frame" width="0" height="0"  style="display:none" frameborder="0">
+    <p class="order-id">Order # 1</p>
+    <p class="branch-name">
+      <span>Branch:&nbsp;</span>
+      <span class="mvalue">Tagaytay</span>
+    </p>
+    <p class="order-date">
+      <span>Order Date:&nbsp;</span>
+      <span class="mvalue">2021-05-01</span>
+    </p>
+    <p class="order-price">
+      <span>Total Price:&nbsp;</span>
+      <span class="mvalue">2021-05-01</span>
+    </p>
+    <div class="details"><div>
 </div>
 <script>
 var formatter = new Intl.NumberFormat('en-PH', {
@@ -526,10 +542,36 @@ $("#btn-csv").click(function(){
   }
 });
 $("#btn-print").click(function(){
-         window.frames["print_frame"].document.body.innerHTML = $("#itemList").html();
-         window.frames["print_frame"].window.focus();
-         window.frames["print_frame"].window.print();
+       $("#print_frame .details").html($("#itemList").html()); 
+       $("#print_frame .order-id").html($("#view-modal .modal-title").html());
+       $("#print_frame .branch-name .mvalue").html($("#order-branch option:selected").html());
+       $("#print_frame .order-price .mvalue").html($("#totalPrice .amount").html());
+       $("#print_frame .details .ignore-clone").remove();
+      $("#print_frame").printThis({
+        removeInline:true,
+
+      });
 });
+
+function PrintElem()
+{
+    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write($("#itemList").html());
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+  //  mywindow.close();
+
+    return true;
+}
+
 @endif
 var removeOrder=null;
 
