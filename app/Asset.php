@@ -50,11 +50,16 @@ class Asset extends Model
 
     }
     public function updateStock($stock){
-        $stock   = DB::table('stocks')->where("team_id",1)
+        $_stock   = DB::table('stocks')->where("team_id",1)
                    ->where("asset_id",$this->id)
                    ->update(["current_stock"=>$stock]);
-                
-        return $stock;
+        Transaction::create([
+            'asset_id'=>$this->id,
+            'stock'=>$stock,
+            'team_id'=>1,
+            'user_id'=>\Auth::id()
+        ]);
+        return $_stock;
 
     }
 

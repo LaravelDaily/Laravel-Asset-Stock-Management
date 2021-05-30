@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.stocks.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.assets.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -52,6 +52,7 @@
                     <thead>
                         <tr>
                             <th class="w-75">User</th>
+                            <th>Timestamp</th>
                             <th>Amount</th>
                         </tr>
                         @foreach($stock->asset->transactions as $transaction)
@@ -59,8 +60,8 @@
                                 <td>
                                     {{ $transaction->user->name }}
                                     ({{ $transaction->user->email }})
-                                    ({{ $transaction->user->team->name }})
                                 </td>
+                                <td>{{ $transaction->updated_at }}</td>
                                 <td>{{ $transaction->stock }}</td>
                             </tr>
                         @endforeach
@@ -68,7 +69,7 @@
                 </table>
             @endif
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.stocks.index') }}">
+                <a class="btn btn-default" href="{{ route('admin.assets.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

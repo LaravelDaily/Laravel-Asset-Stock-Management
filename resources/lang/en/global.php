@@ -259,4 +259,5 @@ return [
     'select_branch'                        => 'Please Select a Branch',
     'currency'                             => "Php.",
     'filter'                               => "Filter",
+    'show_asset_history'                   => "Show History"
 ];

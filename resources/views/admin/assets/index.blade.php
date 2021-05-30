@@ -121,6 +121,11 @@
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
                                 @endcan
+                                @can('asset_show')
+                                <a class="btn btn-xs btn-primary view-history" href="{{ route('admin.stocks.index') }}/{{ $asset->id}}">
+                                        {{ trans('global.show_asset_history') }}
+                                </a>
+                                @endcan
 
                             </td>
 
