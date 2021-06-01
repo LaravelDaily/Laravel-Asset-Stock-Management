@@ -201,6 +201,7 @@ $(".view-asset").click(function(){
             $('#dynamic-content').html(data); // load response 
             $('#modal-loader').hide();        // hide ajax loader  
             $("#view-modal .modal-footer button").click(function(){
+                if(confirm("Are you sure?"))
                 $("#view-modal #save-data").click();
             }); 
         })

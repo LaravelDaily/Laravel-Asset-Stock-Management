@@ -41,6 +41,8 @@
                 <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', $asset->getStock()) }}" required>
                 <span class="btn btn-danger stock-min">-</span>
                 </span>
+                <div><span id='stock-original' class="font-weight-bold"></span></div>
+                <div><span id='stock-estimate'></span></div>
                 @if($errors->has('current_stock'))
                     <div class="invalid-feedback">
                         {{ $errors->first('current_stock') }}
@@ -66,17 +68,55 @@
         </form>
         </div>
         <script>
+            var formatter = new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            });
+            var oldQty=$("#asset-edit-modal #current_stock").val();
+            console.log(oldQty);
             $(".stock-add").click(function(){
                 var _val=($("#current_stock").val());
                 $("#asset-edit-modal #current_stock").val(parseInt(_val)+1);
+                UpdateEstimateCost();
             });
             $(".stock-min").click(function(){
                 var _val=($("#current_stock").val());
                 $("#asset-edit-modal #current_stock").val(parseInt(_val)- 1);
+                UpdateEstimateCost();
             });
             $("#asset-edit-modal input[type='number']").click(function(){
                 $(this).select();
             });
+            $("#price_buy").change(function(){
+                UpdateEstimateCost();
+            });
+
+            $("#stock-original").html("Current Stock :"+$("#asset-edit-modal #current_stock").val());
+ 
+
+        function UpdateEstimateCost(){
+            
+            var estimatecost=$("#price_buy").val();
+            var newQty=$("#asset-edit-modal #current_stock").val();
+            var diff=newQty-oldQty;
+            if(diff==0){
+                $("#stock-estimate").fadeOut();
+            }else{
+                $("#stock-estimate").fadeIn();
+            }
+            var cost=formatter.format(estimatecost*(newQty-oldQty));
+            
+            if(estimatecost*(newQty-oldQty)>0){
+                cost="Estimated cost: "+cost;
+                $("#stock-estimate").html(cost);
+            }else if(estimatecost*(newQty-oldQty)<0){
+                $("#stock-estimate").html("");
+            }
+           
+            
+        }
+
+        
 
         </script>
  
