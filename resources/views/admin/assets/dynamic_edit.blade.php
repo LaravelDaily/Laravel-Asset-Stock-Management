@@ -87,7 +87,7 @@
             $("#asset-edit-modal input[type='number']").click(function(){
                 $(this).select();
             });
-            $("#price_buy").change(function(){
+            $("#price_buy,#current_stock").change(function(){
                 UpdateEstimateCost();
             });
 
