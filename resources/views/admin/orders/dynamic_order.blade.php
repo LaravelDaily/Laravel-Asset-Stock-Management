@@ -377,7 +377,8 @@ function confirmQty(){
 }
 function  fillOrder(_order){
   order.id=_order.id;
-  $("#view-modal .modal-title").html("Order #"+order.id+"");
+  order.branch_order_code = _order.branch_order_code;
+  $("#view-modal .modal-title").html("Order #"+order.branch_order_code+"");
   order.branch_id=_order.branch_id;
   order.itemList=_order.itemList;
   order.total_price=_order.total_price;
@@ -517,7 +518,7 @@ $('#bProcessOrder').click(function() {
 @if(isset($order->id))
 $("#btn-csv").click(function(){
   let csvContent = "data:text/csv;charset=utf-8,";
-  var _info=[("Order id:"+order.id)];
+  var _info=[("Order number: "+order.branch_order_code)];
   csvContent += _info.join(",") + "\r\n";
   _info=["Branch","<?php echo Branch::find($order->branch_id)->name;?>"];
   csvContent += _info.join(",") + "\r\n";
@@ -536,13 +537,13 @@ $("#btn-csv").click(function(){
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "order_"+order.id+".csv");
+    link.setAttribute("download", "order_"+order.branch_order_code+".csv");
     document.body.appendChild(link); // Required for FF
     link.click();
   }
 });
 $("#btn-print").click(function(){
-       $("#print_frame .details").html($("#itemList").html()); 
+       $("#print_frame .details").html($("#itemList").html());
        $("#print_frame .order-id").html($("#view-modal .modal-title").html());
        $("#print_frame .branch-name .mvalue").html($("#order-branch option:selected").html());
        $("#print_frame .order-price .mvalue").html($("#totalPrice .amount").html());
