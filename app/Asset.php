@@ -38,7 +38,7 @@ class Asset extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'asset_id');
+        return $this->hasMany(Transaction::class, 'asset_id')->latest()->take(10)->orderby("created_at","desc");
     }
 
     public function getStock(){

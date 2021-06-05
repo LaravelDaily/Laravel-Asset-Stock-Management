@@ -34,17 +34,19 @@
                 @endif
                 <span class="help-block"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="border: 1px solid #efefef;
+    padding: 10px;">
                 <label class="required" for="current_stock">Qty</label>
-                <p>  <span class='btn btn-success' id="input-qty">
+                <p>  <span class='btn btn-success' style="display:none" id="input-qty">
                         Add Qty
                      </span> </p>
-                <span style="display: block;text-align: center;">
-                <span class="btn btn-success stock-add">+</span>
-                <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', $asset->getStock()) }}" required>
-                <span class="btn btn-danger stock-min">-</span>
+                <span style="display: block;text-align: center;"> 
+                <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" readonly type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', $asset->getStock()) }}" required>
                 </span>
-                <div><span id='stock-original' class="font-weight-bold"></span></div>
+                <span style="display: block;text-align: center;"> 
+                <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock_update" id="current_stock_update" placeholder="Enter stock amount to be added / removed" >
+                </span>
+                <div><span id='stock-original' style="display:none" class="font-weight-bold"></span></div>
                 <div><span id='stock-estimate'></span></div>
                 @if($errors->has('current_stock'))
                     <div class="invalid-feedback">
@@ -90,7 +92,7 @@
             $("#asset-edit-modal input[type='number']").click(function(){
                 $(this).select();
             });
-            $("#price_buy,#current_stock").change(function(){
+            $("#price_buy,#current_stock,#current_stock_update").keyup(function(){
                 UpdateEstimateCost();
             });
             $("#input-qty").click (function(){
@@ -104,8 +106,8 @@
             
 
 
-                var _val=($("#current_stock").val());
-                $("#asset-edit-modal #current_stock").val(parseInt(_val)+parseInt( _stock));
+                
+                $("#asset-edit-modal #current_stock").val(parseInt(oldQty)+parseInt( _stock));
                 UpdateEstimateCost();
                 
             });
@@ -115,19 +117,20 @@
         function UpdateEstimateCost(){
             
             var estimatecost=$("#price_buy").val();
-            var newQty=$("#asset-edit-modal #current_stock").val();
-            var diff=newQty-oldQty;
-            if(diff==0){
+            var newQty=$("#asset-edit-modal #current_stock_update").val();
+          //  console.log(newQty);
+           
+            if(newQty==0){
                 $("#stock-estimate").fadeOut();
             }else{
                 $("#stock-estimate").fadeIn();
             }
-            var cost=formatter.format(estimatecost*(newQty-oldQty));
+            var cost=formatter.format(estimatecost*(newQty));
             
-            if(estimatecost*(newQty-oldQty)>0){
+            if(newQty>0){
                 cost="Estimated cost: "+cost;
                 $("#stock-estimate").html(cost);
-            }else if(estimatecost*(newQty-oldQty)<0){
+            }else{
                 $("#stock-estimate").html("");
             }
            
