@@ -10,6 +10,18 @@
     </div>
 @endcan
 
+@if(session('error'))
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Alert!</strong>
+  <br/>
+  {{session('error')}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+@endif
+
+
 <div id="view-modal" class="modal fade"  
     tabindex="-1" role="dialog" 
     aria-labelledby="myModalLabel" 

@@ -46,6 +46,11 @@ class AssetsController extends Controller
 
     public function update(UpdateAssetRequest $request, Asset $asset)
     {
+        if ($request->all()['current_stock']<0) {
+            return redirect()->route('admin.assets.index')->with([
+                'error' => 'Cannot update stock.',
+            ]);
+        }
         $asset->update($request->all());
         $asset->updateStock($request->all()['current_stock']);
         return redirect()->route('admin.assets.index');
