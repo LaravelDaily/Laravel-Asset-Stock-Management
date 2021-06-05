@@ -121,9 +121,9 @@ table.dataTable thead .sorting_desc {
 .stock-min{
     float:right;
 }
-#asset-edit-modal #current_stock{
+#asset-edit-modal #current_stock,#asset-edit-modal #current_stock_update{
     display: inline;
-    width: 80%;
+    width: 100%;
     text-align: center;
 }
 #asset-edit-modal label[for='current_stock'],#asset-edit-modal label[for='danger_level']{
@@ -139,7 +139,9 @@ table.dataTable thead .sorting_desc {
     color:white;
 }
 #asset-edit-modal #current_stock::-webkit-outer-spin-button,
-#asset-edit-modal #current_stock::-webkit-inner-spin-button {
+#asset-edit-modal #current_stock::-webkit-inner-spin-button,
+#asset-edit-modal #current_stock_update::-webkit-outer-spin-button,
+#asset-edit-modal #current_stock_update::-webkit-inner-spin-button{
   -webkit-appearance: none;
   margin: 0;
 }

@@ -5,6 +5,11 @@
     <div class="card-header">
         {{ trans('global.show') }} {{ trans('cruds.stock.title') }}
     </div>
+    <?php
+    
+    $_transactions=$stock->asset->transactions->toArray();
+    //ksort($_transactions);
+    ?>
 
     <div class="card-body">
         <div class="form-group">
@@ -55,14 +60,14 @@
                             <th>Timestamp</th>
                             <th>Amount</th>
                         </tr>
-                        @foreach($stock->asset->transactions as $transaction)
+                        @foreach(array_reverse( $_transactions) as $transaction)
                             <tr>
                                 <td>
-                                    {{ $transaction->user->name }}
-                                    ({{ $transaction->user->email }})
+                                    {{ $transaction['user']['name'] }}
+                                    ({{  $transaction['user']['email'] }})
                                 </td>
-                                <td>{{ $transaction->updated_at }}</td>
-                                <td>{{ $transaction->stock }}</td>
+                                <td>{{  $transaction['updated_at'] }}</td>
+                                <td>{{  $transaction['stock'] }}</td>
                             </tr>
                         @endforeach
                     </thead>
