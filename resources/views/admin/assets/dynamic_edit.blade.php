@@ -36,6 +36,9 @@
             </div>
             <div class="form-group">
                 <label class="required" for="current_stock">Qty</label>
+                <p>  <span class='btn btn-success' id="input-qty">
+                        Add Qty
+                     </span> </p>
                 <span style="display: block;text-align: center;">
                 <span class="btn btn-success stock-add">+</span>
                 <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', $asset->getStock()) }}" required>
@@ -90,7 +93,13 @@
             $("#price_buy,#current_stock").change(function(){
                 UpdateEstimateCost();
             });
-
+            $("#input-qty").click (function(){
+                var _stock = prompt("Specify quantity to add", "0");
+                var _val=($("#current_stock").val());
+                $("#asset-edit-modal #current_stock").val(parseInt(_val)+parseInt( _stock));
+                UpdateEstimateCost();
+                
+            });
             $("#stock-original").html("Current Stock :"+$("#asset-edit-modal #current_stock").val());
  
 
@@ -115,6 +124,7 @@
            
             
         }
+        
 
         
 

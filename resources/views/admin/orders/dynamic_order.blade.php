@@ -547,10 +547,14 @@ $("#btn-print").click(function(){
        $("#print_frame .branch-name .mvalue").html($("#order-branch option:selected").html());
        $("#print_frame .order-price .mvalue").html($("#totalPrice .amount").html());
        $("#print_frame .details .ignore-clone").remove();
-      $("#print_frame").printThis({
-        removeInline:true,
-
+      setTimeout(
+      function() 
+      {
+        $("#print_frame").printThis({
+        removeInline:true
       });
+      }, 1000);
+
 });
 
 function PrintElem()
