@@ -94,7 +94,16 @@
                 UpdateEstimateCost();
             });
             $("#input-qty").click (function(){
-                var _stock = prompt("Specify quantity to add", "0");
+                var _stock =0;
+                $_value=(prompt("Specify quantity to add", 0));
+                if(Number.isInteger(parseInt($_value))){
+                    _stock=parseInt($_value);
+                }else{
+                    alert("Please enter a number");
+                }
+            
+
+
                 var _val=($("#current_stock").val());
                 $("#asset-edit-modal #current_stock").val(parseInt(_val)+parseInt( _stock));
                 UpdateEstimateCost();
