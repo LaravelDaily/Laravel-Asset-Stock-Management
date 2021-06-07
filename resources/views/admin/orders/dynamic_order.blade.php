@@ -504,12 +504,18 @@ function updateStockDisplay(currentStockRemaining){
       }
     }
 }
-
+var _processing=false;
 $('#bProcessOrder').click(function() {
+  $('#bProcessOrder').prop( "disabled", true );
+    if(_processing){
+      alert("Processing..");
+      return;
+    }
      if(order==null){
        alert("Cannot Process");
        return;
      }
+     _processing=true;
     $(this).append('<input type="hidden" name="total_price" value="'+$("#totalPrice .amount").attr("data-amount")+'" /> ');
     $(this).append('<input type="hidden" name="order_id" value="'+order.id+'" /> ');
     $('#frmOrder').submit();
