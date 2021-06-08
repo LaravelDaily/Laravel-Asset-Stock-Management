@@ -305,7 +305,7 @@ table.dataTable thead .sorting_desc {
     height: 100%;
     color: #FFF;
     transform: translateY(-50%);
-    z-index: 1000;
+    z-index: 9999;
     visibility: hidden;
   }
   
