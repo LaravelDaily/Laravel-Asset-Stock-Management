@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="price_buy">Bought Price</label>
-                <input class="form-control {{ $errors->has('price_buy') ? 'is-invalid' : '' }}" type="number" name="price_buy" id="price_buy" value="{{ old('price_buy', number_format($asset->price_buy, 2)) }}" required>
+                <input class="form-control {{ $errors->has('price_buy') ? 'is-invalid' : '' }}" type="number" name="price_buy" id="price_buy" value="{{ old('price_buy', number_format($asset->price_buy, 2)) }}" min="0.00" max="100000.00" step="0.01" required>
                 @if($errors->has('price_buy'))
                     <div class="invalid-feedback">
                         {{ $errors->first('price_buy') }}
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="price_sell">Sell Price</label>
-                <input class="form-control {{ $errors->has('price_sell') ? 'is-invalid' : '' }}" type="number" name="price_sell" id="price_sell" value="{{ old('price_sell', number_format($asset->price_sell, 2)) }}" required>
+                <input class="form-control {{ $errors->has('price_sell') ? 'is-invalid' : '' }}" type="number" name="price_sell" id="price_sell" value="{{ old('price_sell', number_format($asset->price_sell, 2)) }}" min="0.00" max="100000.00" step="0.01" required>
                 @if($errors->has('price_sell'))
                     <div class="invalid-feedback">
                         {{ $errors->first('price_sell') }}

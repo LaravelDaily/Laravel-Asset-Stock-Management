@@ -245,16 +245,55 @@
         $( document ).ajaxStart(function() {
           $("div.spanner").addClass("show");
           $("div.overlay").addClass("show");
+          $(document).keypress(function (event) {
+              if (event.keyCode === 10 || event.keyCode === 13) {
+                  event.preventDefault();
+              }
+          });
      });
 
      $( document ).ajaxComplete(function() {
       $("div.spanner").removeClass("show");
       $("div.overlay").removeClass("show");
+      $(document).keypress(function (event) {
+             
+          });
      });
      $(document).submit(function( event ) {
       $("div.spanner").addClass("show");
       $("div.overlay").addClass("show");
+      $(document).keypress(function (event) {
+              if (event.keyCode === 10 || event.keyCode === 13) {
+                  event.preventDefault();
+              }
+      });      
     });
+    var _timeoutLoaderHider=null;
+    var _confirm = window.confirm;
+    window.confirm = function() {
+        //catch result
+        var confirmed = _confirm.apply(window,arguments);
+        if (confirmed) {
+            
+        } else {
+
+          if(checkIfLoaderisVisible){
+            _timeoutLoaderHider=setTimeout(function(){$("div.spanner").removeClass("show");
+           $("div.overlay").removeClass("show");console.log("removing"); }, 1000);
+          }else{
+            clearTimeout(_timeoutLoaderHider);
+          }
+         
+        }
+        return confirmed;
+    };
+    function checkIfLoaderisVisible(){
+      if($("div.spanner").hasClass("show")){
+        return true;
+      }else{
+        return false;
+      }
+    }
     </script>
     
     @yield('scripts')
