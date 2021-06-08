@@ -42,9 +42,7 @@
             <div class="form-group">
                 <label class="required" for="current_stock">Qty</label>
                 <span style="display: block;text-align: center;">
-                <span class="btn btn-success stock-add">+</span>
                 <input class="form-control {{ $errors->has('current_stock') ? 'is-invalid' : '' }}" type="number" name="current_stock" id="current_stock" value="{{ old('current_stock', 0) }}" required>
-                <span class="btn btn-danger stock-min">-</span>
                 </span>
                 @if($errors->has('current_stock'))
                     <div class="invalid-feedback">

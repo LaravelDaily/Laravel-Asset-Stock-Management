@@ -26,7 +26,6 @@
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     @yield('styles')
 </head>
-
 <body class="app header-fixed sidebar-fixed aside-menu-fixed pace-done sidebar-lg-show">
     <header class="app-header navbar">
         <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
@@ -233,6 +232,7 @@
   $.fn.dataTable.ext.classes.sPageButton = '';
 });
 
+
     </script>
     <script>
         $("#price_buy").blur(function() {
@@ -241,8 +241,28 @@
         $("#price_sell").blur(function() {
             $('#price_sell').val(parseFloat(this.value).toFixed(2));
         });
+
+        $( document ).ajaxStart(function() {
+          $("div.spanner").addClass("show");
+          $("div.overlay").addClass("show");
+     });
+
+     $( document ).ajaxComplete(function() {
+      $("div.spanner").removeClass("show");
+      $("div.overlay").removeClass("show");
+     });
+     $(document).submit(function( event ) {
+      $("div.spanner").addClass("show");
+      $("div.overlay").addClass("show");
+    });
     </script>
+    
     @yield('scripts')
+    <div class="overlay"></div>
+<div class="spanner">
+  <div class="loader"></div>
+  <p>Loading, please be patient.</p>
+</div>
 </body>
 
 </html>
