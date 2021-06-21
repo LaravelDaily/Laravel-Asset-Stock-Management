@@ -87,10 +87,13 @@ $ddBranches=Branch::all();
 
             </div>
             <div class="modal-footer">
-                <p id="bProcessOrder"  class="btn btn-default">{{ trans('global.process_order') }}</p>
+                <!-- <p id="bProcessOrder"  class="btn btn-default">{{ trans('global.process_order') }}</p> -->
+                <button type="button" style="padding:8px" class="close" data-dismiss="modal" aria-hidden="true">DONE
+                </button>               
             </div>
 
          </div>
+         
     </div>
 </form>
 </div><!-- /.modal -->
@@ -184,7 +187,7 @@ $ddBranches=Branch::all();
                                  View Transaction
                              </a>
                              @if($order->status=="Open")
-                             <a class="btn btn-xs btn-primary text-white"  href="{{ route("admin.processOrder",$order->id   ) }}">
+                             <a class="btn btn-xs btn-primary text-white"   href="{{ route("admin.processOrder",$order->id   ) }}">
                                  Process
                              </a>
                              @endif
