@@ -280,14 +280,16 @@
       });
     });
     $("a").click(function(event) {
-      $("div.spanner").addClass("show");
-      $("div.overlay").addClass("show");
-      $(".btn").css("pointer-events", "none");
-      $(document).keypress(function(event) {
-        if (event.keyCode === 10 || event.keyCode === 13) {
-          event.preventDefault();
-        }
-      });
+      if ($(this).attr("href") != "#") {
+        $("div.spanner").addClass("show");
+        $("div.overlay").addClass("show");
+        $(".btn").css("pointer-events", "none");
+        $(document).keypress(function(event) {
+          if (event.keyCode === 10 || event.keyCode === 13) {
+            event.preventDefault();
+          }
+        });
+      }
     });
     var _timeoutLoaderHider = null;
     var _confirm = window.confirm;
