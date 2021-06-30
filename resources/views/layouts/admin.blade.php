@@ -32,14 +32,17 @@
     <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">
-      <span class="navbar-brand-full">{{ trans('panel.site_title') }}</span>
-      <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
-    </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+    <a class="navbar-brand" href="#">
+      <span class="navbar-brand-full">
+        <span>
+          <img src="{{ asset('images/mbanner.PNG') }}" style="height: 50px;"/>
+        </span>
+      </span>
+      <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
+    </a>
     <ul class="nav navbar-nav ml-auto">
       @if(count(config('panel.available_languages', [])) > 1)
       <li class="nav-item dropdown d-md-down-none">
