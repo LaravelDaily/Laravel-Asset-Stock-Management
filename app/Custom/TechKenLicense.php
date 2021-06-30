@@ -47,13 +47,36 @@ class TechKenLicense
 
     public function GetUUID()
     {
-        // Checking UUID for Windows
-        $process = shell_exec("C:\\Windows\\System32\\wbem\\WMIC.exe csproduct get UUID");
-        $process = str_replace("UUID", "", $process);
-        $process = str_replace(" ", "", $process);
-        $process = str_replace("\r\n", "", $process);
-
-        return $process;
+        try {
+            switch(PHP_OS_FAMILY) {
+                case "Windows":
+                    // Checking UUID for Windows
+                    $process = shell_exec("C:\\Windows\\System32\\wbem\\WMIC.exe csproduct get UUID");
+                    $process = str_replace("UUID", "", $process);
+                    $process = str_replace(" ", "", $process);
+                    $process = str_replace("\r\n", "", $process);
+                    break;
+                case "Linux":
+                    $process = shell_exec("blkid /dev/sda1");
+                    $process = str_replace("\r\n", "", $process);
+                    $arr_pro = explode(" ", $process);
+                    foreach($arr_pro as $pro)
+                    {
+                        if(str_contains($pro, "UUID"))
+                        {
+                            $pro = str_replace("UUID=", "", $pro);
+                            $pro = str_replace('"', '', $pro);
+                            $process = $pro;
+                            break;
+                        }
+                    }
+                    break;
+                default:
+            }
+            return $process;
+        } catch(Exception $ex) {
+            dd($ex->getMessage());
+        }
     }
 
     public function ReadLicense()
