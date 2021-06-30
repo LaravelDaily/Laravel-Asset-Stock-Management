@@ -389,3 +389,24 @@ table.dataTable thead .sorting_desc {
   .spanner.show, .overlay.show {
       opacity: 1
   }
+
+  .business-logo{
+    height: 285px;
+    background-image: url(../images/mlogo.PNG);
+    background-size: contain;
+    background-repeat-x: no-repeat;
+    background-position: center;
+    margin-bottom: 8px;
+    background-color: #82cb40;
+  }
+  .app-header .navbar-brand{
+    width: unset;
+  }
+  @media (max-width: 991.98px){
+    .app-header .navbar-brand {
+        position: absolute; 
+        top: 0;
+        left: 25%;
+        margin-left: 0px;
+    }
+  }
