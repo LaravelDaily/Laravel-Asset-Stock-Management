@@ -19,7 +19,7 @@
   <link href="{{ asset('css/coreui.min.css') }}" rel="stylesheet" />
   <script src="{{ asset('js/2d26724d1b.js') }}"></script>
   <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}"/>
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
   @yield('styles')
 </head>
@@ -127,22 +127,14 @@
   <script src="{{ asset('js/printThis.js') }}"></script>
   <script>
     $(function() {
-      let copyButtonTrans = '{{ trans('
-      global.datatables.copy ') }}'
-      let csvButtonTrans = '{{ trans('
-      global.datatables.csv ') }}'
-      let excelButtonTrans = '{{ trans('
-      global.datatables.excel ') }}'
-      let pdfButtonTrans = '{{ trans('
-      global.datatables.pdf ') }}'
-      let printButtonTrans = '{{ trans('
-      global.datatables.print ') }}'
-      let colvisButtonTrans = '{{ trans('
-      global.datatables.colvis ') }}'
-      let selectAllButtonTrans = '{{ trans('
-      global.select_all ') }}'
-      let selectNoneButtonTrans = '{{ trans('
-      global.deselect_all ') }}'
+      let copyButtonTrans = '{{ trans('global.datatables.copy') }}';
+      let csvButtonTrans = '{{ trans('global.datatables.csv') }}';
+      let excelButtonTrans = '{{ trans('global.datatables.excel') }}';
+      let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}';
+      let printButtonTrans = '{{ trans('global.datatables.print') }}';
+      let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}';
+      let selectAllButtonTrans = '{{ trans('global.select_all') }}';
+      let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}';
 
       let languages = {
         'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
